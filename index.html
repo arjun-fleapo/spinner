@@ -204,37 +204,96 @@
         animation: float 30s ease-in-out infinite reverse;
       }
 
-      .title {
+      /* Payment Success Section */
+      .payment-success {
         text-align: center;
-        color: #ffffff;
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 12px;
-        text-shadow: 0 4px 20px rgba(255, 107, 53, 0.5),
-          0 0 40px rgba(247, 147, 30, 0.3);
-        letter-spacing: 2px;
+        margin-bottom: 60px;
         animation: fadeInScale 0.8s ease-out 0.1s both;
         position: relative;
         z-index: 1;
-        background: linear-gradient(135deg, #ffffff 0%, #FF6B35 50%, #F7931E 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-transform: uppercase;
       }
 
-      .subtitle {
-        text-align: center;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin-bottom: 40px;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4),
+          0 0 0 4px rgba(16, 185, 129, 0.2);
         animation: fadeInScale 0.8s ease-out 0.2s both;
+      }
+
+      .success-icon::before {
+        content: "✓";
+        color: white;
+        font-size: 48px;
+        font-weight: bold;
+        line-height: 1;
+      }
+
+      .payment-title {
+        text-align: center;
+        color: #10b981;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        letter-spacing: 0.5px;
+        animation: fadeInScale 0.8s ease-out 0.3s both;
         position: relative;
         z-index: 1;
+      }
+
+      .payment-subtitle {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        font-weight: 400;
+        margin-bottom: 0;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+        animation: fadeInScale 0.8s ease-out 0.4s both;
+        position: relative;
+        z-index: 1;
+        letter-spacing: 0.3px;
+      }
+
+      /* Reward Section */
+      .reward-section {
+        text-align: center;
+        margin-bottom: 40px;
+        animation: fadeInScale 0.8s ease-out 0.5s both;
+        position: relative;
+        z-index: 1;
+      }
+
+      .reward-title {
+        text-align: center;
+        color: #60a5fa;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-shadow: 0 2px 10px rgba(96, 165, 250, 0.3);
         letter-spacing: 0.5px;
-        line-height: 1.6;
+        animation: fadeInScale 0.8s ease-out 0.6s both;
+        position: relative;
+        z-index: 1;
+      }
+
+      .reward-subtitle {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 0;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+        animation: fadeInScale 0.8s ease-out 0.7s both;
+        position: relative;
+        z-index: 1;
+        letter-spacing: 0.3px;
       }
 
     .wheel-container {
@@ -537,12 +596,56 @@
         }
       }
 
+      @media (max-width: 600px) {
+        .payment-success {
+          margin-bottom: 40px;
+        }
+
+        .success-icon {
+          width: 60px;
+          height: 60px;
+          margin-bottom: 15px;
+        }
+
+        .success-icon::before {
+          font-size: 36px;
+        }
+
+        .payment-title {
+          font-size: 1.8rem;
+        }
+
+        .payment-subtitle {
+          font-size: 0.95rem;
+        }
+
+        .reward-section {
+          margin-bottom: 30px;
+        }
+
+        .reward-title {
+          font-size: 1.6rem;
+        }
+
+        .reward-subtitle {
+          font-size: 0.9rem;
+        }
+      }
+
       @media (max-width: 400px) {
-        .title {
+        .payment-title {
           font-size: 1.5rem;
         }
 
-        .subtitle {
+        .payment-subtitle {
+          font-size: 0.85rem;
+        }
+
+        .reward-title {
+          font-size: 1.4rem;
+        }
+
+        .reward-subtitle {
           font-size: 0.8rem;
         }
 
@@ -554,9 +657,20 @@
 </style>
   </head>
   <body>
-    <h1 class="title">🎯 Spin & Win</h1>
-    <p class="subtitle">Try your luck and see what you win!</p>
+    <!-- Payment Success Section -->
+    <div class="payment-success">
+      <div class="success-icon"></div>
+      <h1 class="payment-title">Payment Successful!</h1>
+      <p class="payment-subtitle">Your purchase is complete</p>
+    </div>
 
+    <!-- Reward Section -->
+    <div class="reward-section">
+      <h2 class="reward-title">Claim Your Exclusive Reward!</h2>
+      <p class="reward-subtitle">Spin the wheel to unlock your bonus surprise</p>
+    </div>
+
+    <!-- Spinner Wheel -->
     <div class="wheel-container">
       <div class="pointer"></div>
       <canvas id="wheelCanvas" width="500" height="500"></canvas>

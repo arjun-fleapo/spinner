@@ -1508,11 +1508,11 @@ wheelCanvas.addEventListener("transitionend", () => {
         // Always return "AI Fiesta" (segment index 2)
         let segmentAtTop = 2;
 
-        // Show reward page with animation
+        // Show reward page with animation after 1.5 second delay
         rewardItemText.textContent = segments[segmentAtTop].text;
         setTimeout(() => {
           rewardPage.classList.add("show");
-        }, 500);
+        }, 1500);
 });
 
 spinButton.addEventListener("click", spinWheel);

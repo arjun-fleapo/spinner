@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Premium Spinner Wheel</title>
@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <style>
+<style>
       @keyframes fadeInScale {
         from {
           opacity: 0;
@@ -232,8 +232,8 @@
         letter-spacing: 0.5px;
       }
 
-      .wheel-container {
-        position: relative;
+    .wheel-container {
+  position: relative;
         width: 520px;
         height: 520px;
         margin: 20px auto;
@@ -268,10 +268,10 @@
         border-radius: 35px;
         z-index: -1;
         opacity: 0.6;
-      }
+}
 
-      #wheelCanvas {
-        display: block;
+#wheelCanvas {
+  display: block;
         margin: 0;
         transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
         border-radius: 50%;
@@ -281,6 +281,7 @@
           0 0 60px rgba(102, 126, 234, 0.3);
         animation: wheelGlow 3s ease-in-out infinite;
         position: relative;
+        transform-origin: center center;
       }
 
       #wheelCanvas.spinning {
@@ -512,9 +513,9 @@
         .pointer::after {
           width: 40px;
           height: 40px;
-        }
+}
 
-        #spinButton {
+#spinButton {
           width: 90px;
           height: 90px;
           font-size: 1.1em;
@@ -540,8 +541,8 @@
           font-size: 1.2rem;
           padding: 12px 20px;
         }
-      }
-    </style>
+}
+</style>
   </head>
   <body>
     <h1 class="title">🎯 Spin & Win</h1>
@@ -554,33 +555,33 @@
     </div>
     <p id="resultDisplay" class="hidden"></p>
 
-    <script>
-      const wheelCanvas = document.getElementById("wheelCanvas");
-      const spinButton = document.getElementById("spinButton");
-      const resultDisplay = document.getElementById("resultDisplay");
-      const ctx = wheelCanvas.getContext("2d");
+<script>
+    const wheelCanvas = document.getElementById("wheelCanvas");
+const spinButton = document.getElementById("spinButton");
+const resultDisplay = document.getElementById("resultDisplay");
+const ctx = wheelCanvas.getContext("2d");
 
-      const segments = [
+const segments = [
         { text: "Prize A", color: "#FF6B9D", gradient: ["#FF6B9D", "#C44569"] },
         { text: "Prize B", color: "#4ECDC4", gradient: ["#4ECDC4", "#44A08D"] },
         { text: "Prize C", color: "#95E1D3", gradient: ["#95E1D3", "#6BC5A8"] },
         { text: "Prize D", color: "#FECA57", gradient: ["#FECA57", "#FF9FF3"] },
-      ];
+];
 
-      let currentRotation = 0;
+let currentRotation = 0;
       let isSpinning = false;
 
-      function drawWheel() {
+function drawWheel() {
         const centerX = wheelCanvas.width / 2;
         const centerY = wheelCanvas.height / 2;
         const radius = wheelCanvas.width / 2;
         const centerRadius = 70; // Radius for center circle where button sits
-        const arcSize = (2 * Math.PI) / segments.length;
+  const arcSize = (2 * Math.PI) / segments.length;
 
         // Clear canvas
         ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
 
-        segments.forEach((segment, index) => {
+  segments.forEach((segment, index) => {
           const startAngle = index * arcSize - Math.PI / 2; // Start from top
           const endAngle = (index + 1) * arcSize - Math.PI / 2;
 
@@ -595,13 +596,13 @@
           gradient.addColorStop(1, segment.gradient[1]);
 
           // Draw segment (pie slice)
-          ctx.beginPath();
+    ctx.beginPath();
           ctx.moveTo(centerX, centerY);
           ctx.arc(centerX, centerY, radius, startAngle, endAngle);
           ctx.lineTo(centerX, centerY);
           ctx.closePath();
           ctx.fillStyle = gradient;
-          ctx.fill();
+    ctx.fill();
 
           // Draw border with shadow effect
           ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
@@ -616,7 +617,7 @@
           ctx.stroke();
 
           // Draw text with better styling
-          ctx.save();
+    ctx.save();
           ctx.translate(centerX, centerY);
           ctx.rotate(startAngle + arcSize / 2);
 
@@ -632,8 +633,8 @@
           ctx.font = "bold 24px 'Poppins', sans-serif";
           ctx.fillText(segment.text, centerRadius + 25, 0);
 
-          ctx.restore();
-        });
+    ctx.restore();
+  });
 
         // Draw center circle with gradient (white background for button)
         const centerGradient = ctx.createRadialGradient(
@@ -704,13 +705,13 @@
           const y = centerY + Math.sin(angle) * radius;
           setTimeout(() => createSparkle(x, y), i * 50);
         }
-      }
+}
 
-      function spinWheel() {
+function spinWheel() {
         if (isSpinning) return;
 
         isSpinning = true;
-        spinButton.disabled = true;
+  spinButton.disabled = true;
         resultDisplay.textContent = "";
         resultDisplay.classList.remove("show");
         resultDisplay.classList.add("hidden");
@@ -734,39 +735,107 @@
         }, 200);
 
         // Calculate rotation to always land on Prize A
-        // Prize A is at the top when rotation = 0 (or any multiple of 360)
-        // Simplest approach: always end at a multiple of 360
-
+        // Prize A (segment 0) starts at -90° (top) and covers -90° to 0° (270° to 360° in standard)
+        // The pointer is at the top (270° in standard coordinates)
+        // After rotating clockwise by X degrees, what's at the top was originally at (270° - X) mod 360
+        // For Prize A to be at top: (270° - X) mod 360 should be between 270° and 360°
+        // This means X mod 360 should be between 270° and 360° (or 0°)
+        // Actually, simpler: Prize A is at top when rotation mod 360 is between 270° and 360° (or 0°)
+        
+        // Wait, let me reconsider: When rotation = 0, Prize A is at top
+        // When rotation = 90, Prize B is at top
+        // When rotation = 180, Prize C is at top  
+        // When rotation = 270, Prize D is at top
+        // When rotation = 360, Prize A is back at top
+        
+        // So Prize A is at top when rotation mod 360 is 0 (or very close, within 0-90 range)
+        // But that's not right either because at 90, Prize B would be at top
+        
+        // Actually: Prize A covers -90° to 0° in canvas (270° to 360° in standard)
+        // After rotating by X degrees clockwise, what's at top (270°) was at (270° - X) mod 360
+        // For Prize A: need 270° <= (270° - X) mod 360 <= 360°
+        // This simplifies to: X mod 360 should be 0 (or between 270° and 360°)
+        
+        // Always land on Prize C
+        // Prize C (segment 2) is at the top when rotation mod 360 = 180
+        // Segments: A=0° (0-90°), B=90° (90-180°), C=180° (180-270°), D=270° (270-360°)
+        // When rotation = 180, Prize C is at the top pointer
+        
         const spins = 5 + Math.random() * 5; // 5-10 full spins for natural look
 
-        // Get current rotation modulo 360
-        let currentMod = currentRotation % 360;
-        if (currentMod < 0) currentMod += 360;
+        // Get current rotation mod 360
+        let mod = currentRotation % 360;
+        if (mod < 0) mod += 360;
 
-        // Calculate rotation needed to reach next multiple of 360
-        // This ensures Prize A is always at the top
-        let rotationToComplete = 360 - currentMod;
-
-        // If we're already at 0 (or very close), add a full rotation
-        if (rotationToComplete < 1) {
-          rotationToComplete = 360;
+        // Target: end at 180 mod 360 (where Prize C is at top)
+        // Prize C covers 180° to 270°, so target around 180-225° for safety
+        const targetMod = 180 + Math.random() * 45; // 180-225 degrees (within Prize C's range)
+        
+        // Calculate rotation needed to reach target
+        let rotationToTarget;
+        if (mod <= targetMod) {
+          rotationToTarget = targetMod - mod;
+        } else {
+          rotationToTarget = (360 - mod) + targetMod;
+        }
+        
+        // Always do at least one full spin
+        if (rotationToTarget < 360) {
+          rotationToTarget += 360;
         }
 
-        // Add a small random offset (0-30 degrees) within Prize A's range for natural variation
-        const smallVariation = Math.random() * 30;
-        rotationToComplete += smallVariation;
+        // Total rotation
+        const totalRotation = spins * 360 + rotationToTarget;
+        currentRotation = currentRotation + totalRotation;
+        
+        // Ensure final rotation mod 360 is in Prize C's range (180-270)
+        const finalMod = currentRotation % 360;
+        if (finalMod < 180 || finalMod > 270) {
+          // Adjust to be in Prize C's range
+          const target = 180 + Math.random() * 45;
+          const adjustment = target - finalMod;
+          currentRotation += adjustment;
+        }
+        
+        console.log('SPIN: mod=', mod.toFixed(1), '→ final=', currentRotation.toFixed(1), 
+                   'finalMod=', (currentRotation % 360).toFixed(1), '→ Prize C should be at top');
 
-        // Total rotation: multiple spins + rotation to complete to next multiple of 360
-        const totalRotation = spins * 360 + rotationToComplete;
+        // Apply transform
+  wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+}
 
-        currentRotation += totalRotation;
-
-        wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
-      }
-
-      wheelCanvas.addEventListener("transitionend", () => {
+wheelCanvas.addEventListener("transitionend", () => {
         isSpinning = false;
-        spinButton.disabled = false;
+  spinButton.disabled = false;
+
+        // CRITICAL: ALWAYS force rotation to 180 mod 360 after transition
+        // This ensures Prize C is always at the top pointer
+        const finalMod = currentRotation % 360;
+        
+        // Target: 180-225 degrees (within Prize C's range)
+        const targetMod = 180 + Math.random() * 45;
+        
+        // Calculate adjustment needed
+        let adjustment = targetMod - finalMod;
+        if (adjustment > 180) adjustment -= 360;
+        if (adjustment < -180) adjustment += 360;
+        
+        currentRotation = currentRotation + adjustment;
+        
+        // Apply correction immediately (snap to correct position)
+        wheelCanvas.style.transition = 'none';
+        wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+        
+        // Re-enable transition for next spin
+        setTimeout(() => {
+          wheelCanvas.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+        }, 100);
+        
+        // Verify
+        const verifyMod = currentRotation % 360;
+        const inRange = verifyMod >= 180 && verifyMod <= 270;
+        console.log('AFTER TRANSITION: Final rotation =', currentRotation.toFixed(2), 
+                   'mod 360 =', verifyMod.toFixed(2), inRange ? '✓ Prize C' : '✗ Wrong range');
 
         // Remove spinning glow effect
         wheelCanvas.classList.remove("spinning");
@@ -785,8 +854,8 @@
           }, i * 30);
         }
 
-        // Always return Prize A (segment index 0)
-        let segmentAtTop = 0;
+        // Always return Prize B (segment index 1)
+        let segmentAtTop = 1;
 
         // Show result with animation
         resultDisplay.textContent = `You won: ${segments[segmentAtTop].text}!`;
@@ -794,12 +863,17 @@
         setTimeout(() => {
           resultDisplay.classList.add("show");
         }, 100);
-      });
+});
 
-      spinButton.addEventListener("click", spinWheel);
+spinButton.addEventListener("click", spinWheel);
 
       // Initialize wheel
-      drawWheel();
-    </script>
-  </body>
+drawWheel();
+      
+      // Ensure initial rotation is exactly 0 (Prize A at top)
+      currentRotation = 0;
+      wheelCanvas.style.transform = 'rotate(0deg)';
+      console.log('Wheel initialized: rotation = 0, Prize A should be at top pointer');
+</script>
+</body>
 </html>

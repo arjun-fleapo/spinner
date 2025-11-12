@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinner Wheel</title>
+    <style>
+        .wheel-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 50px auto;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        #wheelCanvas {
+            display: block;
+            margin: 0 auto;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            border-radius: 50%;
+        }
+
+        #spinButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #spinButton:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+
+        #spinButton:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #resultDisplay {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wheel-container">
+        <canvas id="wheelCanvas" width="500" height="500"></canvas>
+        <button id="spinButton">Spin Now!</button>
+        <p id="resultDisplay"></p>
+    </div>
+
+    <script>
+        const wheelCanvas = document.getElementById("wheelCanvas");
+        const spinButton = document.getElementById("spinButton");
+        const resultDisplay = document.getElementById("resultDisplay");
+        const ctx = wheelCanvas.getContext("2d");
+
+        const segments = [
+            { text: "Prize A", color: "#FF6B6B" },
+            { text: "Prize B", color: "#4ECDC4" },
+            { text: "Prize C", color: "#95E1D3" },
+            { text: "Prize D", color: "#FFE66D" },
+        ];
+
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function drawWheel() {
+            const centerX = wheelCanvas.width / 2;
+            const centerY = wheelCanvas.height / 2;
+            const radius = wheelCanvas.width / 2;
+            const arcSize = (2 * Math.PI) / segments.length;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+
+            segments.forEach((segment, index) => {
+                const startAngle = index * arcSize - Math.PI / 2; // Start from top
+                const endAngle = (index + 1) * arcSize - Math.PI / 2;
+
+                // Draw segment
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = segment.color;
+                ctx.fill();
+                ctx.strokeStyle = "#fff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw text
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + arcSize / 2);
+                ctx.textAlign = "left";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = "#000";
+                ctx.font = "bold 20px Arial";
+                ctx.fillText(segment.text, radius * 0.6, 0);
+                ctx.restore();
+            });
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            
+            isSpinning = true;
+            spinButton.disabled = true;
+            resultDisplay.textContent = "";
+
+            // Random spin: multiple rotations plus random angle
+            const spins = 5 + Math.random() * 5; // 5-10 full spins
+            const randomAngle = Math.random() * 360;
+            const totalRotation = spins * 360 + randomAngle;
+            
+            currentRotation += totalRotation;
+            wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+        }
+
+        wheelCanvas.addEventListener("transitionend", () => {
+            isSpinning = false;
+            spinButton.disabled = false;
+            
+            // Calculate winning segment
+            // Normalize rotation to 0-360 range
+            let normalizedAngle = (currentRotation % 360);
+            // Convert to positive angle
+            if (normalizedAngle < 0) normalizedAngle += 360;
+            // Adjust for starting at top (-90 degrees offset)
+            normalizedAngle = (normalizedAngle + 90) % 360;
+            // Calculate segment (each segment is 360/segments.length degrees)
+            const segmentAngle = 360 / segments.length;
+            // Reverse the index because we're rotating clockwise
+            let winningIndex = Math.floor(normalizedAngle / segmentAngle);
+            // Ensure index is within bounds
+            winningIndex = segments.length - 1 - winningIndex;
+            if (winningIndex < 0) winningIndex = 0;
+            if (winningIndex >= segments.length) winningIndex = segments.length - 1;
+            
+            resultDisplay.textContent = `You won: ${segments[winningIndex].text}!`;
+        });
+
+        spinButton.addEventListener("click", spinWheel);
+
+        // Initialize wheel
+        drawWheel();
+    </script>
+</body>
+</html>

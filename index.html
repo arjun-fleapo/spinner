@@ -1190,17 +1190,15 @@ function drawWheel() {
         const centerX = wheelCanvas.width / 2;
         const centerY = wheelCanvas.height / 2;
         const radius = wheelCanvas.width / 2;
-        const centerRadius = 75; // Radius for center circle where button sits
+        const centerRadius = 75;
   const arcSize = (2 * Math.PI) / segments.length;
 
-        // Clear canvas
         ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
 
   segments.forEach((segment, index) => {
-          const startAngle = index * arcSize - Math.PI / 2; // Start from top
+          const startAngle = index * arcSize - Math.PI / 2;
           const endAngle = (index + 1) * arcSize - Math.PI / 2;
 
-          // Create gradient for each segment
           const gradient = ctx.createLinearGradient(
             centerX + Math.cos(startAngle) * radius,
             centerY + Math.sin(startAngle) * radius,
@@ -1210,7 +1208,6 @@ function drawWheel() {
           gradient.addColorStop(0, segment.gradient[0]);
           gradient.addColorStop(1, segment.gradient[1]);
 
-          // Draw segment (pie slice)
     ctx.beginPath();
           ctx.moveTo(centerX, centerY);
           ctx.arc(centerX, centerY, radius, startAngle, endAngle);
@@ -1219,24 +1216,20 @@ function drawWheel() {
           ctx.fillStyle = gradient;
     ctx.fill();
 
-          // Draw border with shadow effect
           ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
           ctx.lineWidth = 3;
           ctx.stroke();
 
-          // Inner highlight
           ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.arc(centerX, centerY, radius - 2, startAngle, endAngle);
           ctx.stroke();
 
-          // Draw text with better styling
     ctx.save();
           ctx.translate(centerX, centerY);
           ctx.rotate(startAngle + arcSize / 2);
 
-          // Text shadow
           ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
           ctx.shadowBlur = 5;
           ctx.shadowOffsetX = 2;
@@ -1246,7 +1239,6 @@ function drawWheel() {
           ctx.textBaseline = "middle";
           ctx.fillStyle = "#fff";
           
-          // Use smaller font for longer text
           const maxWidth = radius - centerRadius - 30;
           let fontSize = 18;
           if (segment.text.length > 40) {
@@ -1257,7 +1249,6 @@ function drawWheel() {
           
           ctx.font = `bold ${fontSize}px 'Poppins', sans-serif`;
           
-          // Wrap text if needed
           const words = segment.text.split(' ');
           const lines = [];
           let currentLine = words[0];
@@ -1274,7 +1265,6 @@ function drawWheel() {
           }
           lines.push(currentLine);
           
-          // Draw text lines
           const lineHeight = fontSize + 4;
           const startY = -(lines.length - 1) * lineHeight / 2;
           lines.forEach((line, lineIndex) => {
@@ -1284,7 +1274,6 @@ function drawWheel() {
     ctx.restore();
   });
 
-        // Draw center circle with gradient (white background for button)
         const centerGradient = ctx.createRadialGradient(
           centerX,
           centerY,
@@ -1301,12 +1290,10 @@ function drawWheel() {
         ctx.fillStyle = centerGradient;
         ctx.fill();
 
-        // Center circle border with shadow
         ctx.strokeStyle = "rgba(102, 126, 234, 0.3)";
         ctx.lineWidth = 4;
         ctx.stroke();
 
-        // Inner ring
         ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -1319,8 +1306,6 @@ function drawWheel() {
         sparkle.className = "sparkle";
         sparkle.style.left = x - 4 + "px";
         sparkle.style.top = y - 4 + "px";
-
-        // Random colors for sparkles
         const colors = [
           "#FFD700",
           "#FF69B4",
@@ -1346,7 +1331,6 @@ function drawWheel() {
         const centerY = container.offsetHeight / 2;
         const radius = 200;
 
-        // Create sparkles in a circle around the wheel
         for (let i = 0; i < 12; i++) {
           const angle = (i * Math.PI * 2) / 12;
           const x = centerX + Math.cos(angle) * radius;
@@ -1362,13 +1346,9 @@ function spinWheel() {
   spinButton.disabled = true;
         rewardPage.classList.remove("show");
 
-        // Add spinning glow effect
         wheelCanvas.classList.add("spinning");
-
-        // Create sparkles
         createSparkles();
 
-        // Create more sparkles during spin
         const sparkleInterval = setInterval(() => {
           if (!isSpinning) {
             clearInterval(sparkleInterval);
@@ -1380,44 +1360,16 @@ function spinWheel() {
           createSparkle(x, y);
         }, 200);
 
-        // Calculate rotation to always land on Prize A
-        // Prize A (segment 0) starts at -90° (top) and covers -90° to 0° (270° to 360° in standard)
-        // The pointer is at the top (270° in standard coordinates)
-        // After rotating clockwise by X degrees, what's at the top was originally at (270° - X) mod 360
-        // For Prize A to be at top: (270° - X) mod 360 should be between 270° and 360°
-        // This means X mod 360 should be between 270° and 360° (or 0°)
-        // Actually, simpler: Prize A is at top when rotation mod 360 is between 270° and 360° (or 0°)
-        
-        // Wait, let me reconsider: When rotation = 0, Prize A is at top
-        // When rotation = 90, Prize B is at top
-        // When rotation = 180, Prize C is at top  
-        // When rotation = 270, Prize D is at top
-        // When rotation = 360, Prize A is back at top
-        
-        // So Prize A is at top when rotation mod 360 is 0 (or very close, within 0-90 range)
-        // But that's not right either because at 90, Prize B would be at top
-        
-        // Actually: Prize A covers -90° to 0° in canvas (270° to 360° in standard)
-        // After rotating by X degrees clockwise, what's at top (270°) was at (270° - X) mod 360
-        // For Prize A: need 270° <= (270° - X) mod 360 <= 360°
-        // This simplifies to: X mod 360 should be 0 (or between 270° and 360°)
-        
         // Always land on "AI Fiesta" (segment index 2)
         // With 5 segments, each segment is 72 degrees
-        // Segment 0: 0-72°, Segment 1: 72-144°, Segment 2: 144-216°, Segment 3: 216-288°, Segment 4: 288-360°
-        // Segment 2 is at the top when rotation mod 360 is in range 144-216 degrees
+        // Segment 2 (144-216°) is at the top when rotation mod 360 is in range 144-216 degrees
         
-        const spins = 5 + Math.random() * 5; // 5-10 full spins for natural look
-
-        // Get current rotation mod 360
+        const spins = 5 + Math.random() * 5;
         let mod = currentRotation % 360;
         if (mod < 0) mod += 360;
 
-        // Target: end at 144-216 degrees (where segment 2 "AI Fiesta" is at top)
-        // Target around 162-198 degrees for safety within the segment
-        const targetMod = 162 + Math.random() * 36; // 162-198 degrees (within segment 2's range)
+        const targetMod = 162 + Math.random() * 36;
         
-        // Calculate rotation needed to reach target
         let rotationToTarget;
         if (mod <= targetMod) {
           rotationToTarget = targetMod - mod;
@@ -1425,33 +1377,23 @@ function spinWheel() {
           rotationToTarget = (360 - mod) + targetMod;
         }
         
-        // Always do at least one full spin
         if (rotationToTarget < 360) {
           rotationToTarget += 360;
         }
 
-        // Total rotation
         const totalRotation = spins * 360 + rotationToTarget;
         currentRotation = currentRotation + totalRotation;
         
-        // Ensure final rotation mod 360 is in segment 2's range (144-216)
         const finalMod = currentRotation % 360;
         if (finalMod < 144 || finalMod > 216) {
-          // Adjust to be in segment 2's range
           const target = 162 + Math.random() * 36;
           const adjustment = target - finalMod;
           currentRotation += adjustment;
         }
-        
-        console.log('SPIN: mod=', mod.toFixed(1), '→ final=', currentRotation.toFixed(1), 
-                   'finalMod=', (currentRotation % 360).toFixed(1), '→ AI Fiesta should be at top');
-
-        // Apply transform
   wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
 }
 
 wheelCanvas.addEventListener("transitionend", () => {
-        // Only process if we were actually spinning
         if (!isSpinning) {
           return;
         }
@@ -1459,39 +1401,24 @@ wheelCanvas.addEventListener("transitionend", () => {
         isSpinning = false;
   spinButton.disabled = false;
 
-        // CRITICAL: ALWAYS force rotation to segment 2's range (144-216 degrees) after transition
-        // This ensures "AI Fiesta" is always at the top pointer
+        // Force rotation to segment 2's range (144-216 degrees) to ensure "AI Fiesta" is at top
         const finalMod = currentRotation % 360;
-        
-        // Target: 162-198 degrees (within segment 2's range for safety)
         const targetMod = 162 + Math.random() * 36;
         
-        // Calculate adjustment needed
         let adjustment = targetMod - finalMod;
         if (adjustment > 180) adjustment -= 360;
         if (adjustment < -180) adjustment += 360;
         
         currentRotation = currentRotation + adjustment;
         
-        // Apply correction immediately (snap to correct position)
         wheelCanvas.style.transition = 'none';
         wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
         
-        // Re-enable transition for next spin
         setTimeout(() => {
           wheelCanvas.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
         }, 100);
-        
-        // Verify
-        const verifyMod = currentRotation % 360;
-        const inRange = verifyMod >= 144 && verifyMod <= 216;
-        console.log('AFTER TRANSITION: Final rotation =', currentRotation.toFixed(2), 
-                   'mod 360 =', verifyMod.toFixed(2), inRange ? '✓ AI Fiesta' : '✗ Wrong range');
 
-        // Remove spinning glow effect
         wheelCanvas.classList.remove("spinning");
-
-        // Create celebration sparkles
         for (let i = 0; i < 20; i++) {
           setTimeout(() => {
             const container = document.querySelector(".wheel-container");
@@ -1505,10 +1432,7 @@ wheelCanvas.addEventListener("transitionend", () => {
           }, i * 30);
         }
 
-        // Always return "AI Fiesta" (segment index 2)
         let segmentAtTop = 2;
-
-        // Show reward page with animation after 1.5 second delay
         rewardItemText.textContent = segments[segmentAtTop].text;
         setTimeout(() => {
           rewardPage.classList.add("show");
@@ -1517,41 +1441,27 @@ wheelCanvas.addEventListener("transitionend", () => {
 
 spinButton.addEventListener("click", spinWheel);
 
-      // Claim button handler
 claimButton.addEventListener("click", () => {
-        // Hide reward page
         rewardPage.classList.remove("show");
-        
-        // Set the claimed reward name
         claimedRewardName.textContent = rewardItemText.textContent;
-        
-        // Show success page after a short delay
         setTimeout(() => {
           rewardClaimedPage.classList.add("show");
         }, 300);
       });
 
-      // Get Started button handler
 getStartedButton.addEventListener("click", () => {
         rewardClaimedPage.classList.remove("show");
-        // You can add additional logic here, like redirecting to a dashboard or home page
       });
 
-      // Initialize wheel
 drawWheel();
       
-      // Ensure initial rotation is exactly 0 (Prize A at top)
-      // Disable transition for initial setup to prevent transitionend event
       wheelCanvas.style.transition = 'none';
       currentRotation = 0;
       wheelCanvas.style.transform = 'rotate(0deg)';
       
-      // Re-enable transition after a short delay
       setTimeout(() => {
         wheelCanvas.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
       }, 100);
-      
-      console.log('Wheel initialized: rotation = 0, Prize A should be at top pointer');
 </script>
 </body>
 </html>

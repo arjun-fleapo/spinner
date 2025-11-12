@@ -144,16 +144,18 @@
         font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
         background: linear-gradient(
-          135deg,
-          #0f172a 0%,
-          #1e293b 25%,
-          #334155 50%,
-          #1e293b 75%,
-          #0f172a 100%
+          to bottom,
+          #000000 0%,
+          #0a0a0a 15%,
+          #1a1a1a 30%,
+          #1f1a18 50%,
+          #2a1f1a 70%,
+          #3d241f 85%,
+          #4a2c1f 100%
         );
-        background-size: 400% 400%;
+        background-size: 100% 100%;
         background-attachment: fixed;
-        animation: fadeInScale 0.8s ease-out, backgroundShift 20s ease infinite;
+        animation: fadeInScale 0.8s ease-out;
         position: relative;
         overflow-x: hidden;
       }
@@ -167,17 +169,17 @@
         bottom: 0;
         background: radial-gradient(
             circle at 20% 50%,
-            rgba(255, 107, 53, 0.1) 0%,
+            rgba(255, 107, 53, 0.05) 0%,
             transparent 60%
           ),
           radial-gradient(
             circle at 80% 80%,
-            rgba(247, 147, 30, 0.08) 0%,
+            rgba(247, 147, 30, 0.04) 0%,
             transparent 60%
           ),
           radial-gradient(
             circle at 50% 20%,
-            rgba(255, 215, 0, 0.06) 0%,
+            rgba(255, 215, 0, 0.03) 0%,
             transparent 50%
           );
         pointer-events: none;
@@ -194,13 +196,13 @@
         bottom: 0;
         background-image: radial-gradient(
           circle at 2px 2px,
-          rgba(255, 255, 255, 0.03) 1px,
+          rgba(255, 255, 255, 0.02) 1px,
           transparent 0
         );
         background-size: 50px 50px;
         pointer-events: none;
         z-index: 0;
-        opacity: 0.3;
+        opacity: 0.2;
         animation: float 30s ease-in-out infinite reverse;
       }
 

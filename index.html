@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spinner Wheel</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
         .wheel-container {
             position: relative;
             width: 500px;
             height: 500px;
             margin: 50px auto;
-            border-radius: 50%;
-            overflow: hidden;
         }
 
         #wheelCanvas {
@@ -21,25 +29,53 @@
             border-radius: 50%;
         }
 
+        /* Pointer indicator at the top */
+        .pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid #333;
+            z-index: 10;
+        }
+
         #spinButton {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 1.2em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
             background-color: #4CAF50;
             color: white;
-            border: none;
-            border-radius: 5px;
+            border: 4px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            transition: all 0.3s ease;
         }
 
         #spinButton:hover:not(:disabled) {
             background-color: #45a049;
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        #spinButton:active:not(:disabled) {
+            transform: translate(-50%, -50%) scale(0.95);
         }
 
         #spinButton:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
+            transform: translate(-50%, -50%);
         }
 
         #resultDisplay {
@@ -52,10 +88,11 @@
 </head>
 <body>
     <div class="wheel-container">
+        <div class="pointer"></div>
         <canvas id="wheelCanvas" width="500" height="500"></canvas>
-        <button id="spinButton">Spin Now!</button>
-        <p id="resultDisplay"></p>
+        <button id="spinButton">SPIN</button>
     </div>
+    <p id="resultDisplay"></p>
 
     <script>
         const wheelCanvas = document.getElementById("wheelCanvas");
@@ -77,6 +114,7 @@
             const centerX = wheelCanvas.width / 2;
             const centerY = wheelCanvas.height / 2;
             const radius = wheelCanvas.width / 2;
+            const centerRadius = 60; // Radius for center circle where button sits
             const arcSize = (2 * Math.PI) / segments.length;
 
             // Clear canvas
@@ -86,10 +124,11 @@
                 const startAngle = index * arcSize - Math.PI / 2; // Start from top
                 const endAngle = (index + 1) * arcSize - Math.PI / 2;
 
-                // Draw segment
+                // Draw segment (pie slice)
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.lineTo(centerX, centerY);
                 ctx.closePath();
                 ctx.fillStyle = segment.color;
                 ctx.fill();
@@ -105,9 +144,18 @@
                 ctx.textBaseline = "middle";
                 ctx.fillStyle = "#000";
                 ctx.font = "bold 20px Arial";
-                ctx.fillText(segment.text, radius * 0.6, 0);
+                ctx.fillText(segment.text, centerRadius + 20, 0);
                 ctx.restore();
             });
+
+            // Draw center circle (white background for button)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, centerRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = "#fff";
+            ctx.fill();
+            ctx.strokeStyle = "#333";
+            ctx.lineWidth = 3;
+            ctx.stroke();
         }
 
         function spinWheel() {
@@ -131,22 +179,19 @@
             spinButton.disabled = false;
             
             // Calculate winning segment
+            // The pointer is at the top (0 degrees)
             // Normalize rotation to 0-360 range
-            let normalizedAngle = (currentRotation % 360);
-            // Convert to positive angle
+            let normalizedAngle = currentRotation % 360;
             if (normalizedAngle < 0) normalizedAngle += 360;
-            // Adjust for starting at top (-90 degrees offset)
-            normalizedAngle = (normalizedAngle + 90) % 360;
-            // Calculate segment (each segment is 360/segments.length degrees)
-            const segmentAngle = 360 / segments.length;
-            // Reverse the index because we're rotating clockwise
-            let winningIndex = Math.floor(normalizedAngle / segmentAngle);
-            // Ensure index is within bounds
-            winningIndex = segments.length - 1 - winningIndex;
-            if (winningIndex < 0) winningIndex = 0;
-            if (winningIndex >= segments.length) winningIndex = segments.length - 1;
             
-            resultDisplay.textContent = `You won: ${segments[winningIndex].text}!`;
+            // Since wheel rotates clockwise, we need to reverse the calculation
+            // The segment at the top after rotation is determined by how much we rotated
+            const segmentAngle = 360 / segments.length;
+            // Calculate which segment is now at the top (pointer position)
+            // We subtract from 360 because we're rotating clockwise
+            let segmentAtTop = Math.floor((360 - normalizedAngle) / segmentAngle) % segments.length;
+            
+            resultDisplay.textContent = `You won: ${segments[segmentAtTop].text}!`;
         });
 
         spinButton.addEventListener("click", spinWheel);

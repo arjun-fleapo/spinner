@@ -1,203 +1,805 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spinner Wheel</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Spinner Wheel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+        }
+        50% {
+          box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+        }
+      }
+
+      @keyframes buttonPulse {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.05);
+        }
+      }
+
+      @keyframes pointerBounce {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(-50%);
+        }
+        50% {
+          transform: translateX(-50%) translateY(-55%);
+        }
+      }
+
+      @keyframes sparkle {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-50px) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-100px) scale(0);
+        }
+      }
+
+      @keyframes resultPop {
+        0% {
+          opacity: 0;
+          transform: scale(0.5) translateY(20px);
+        }
+        50% {
+          transform: scale(1.1) translateY(-5px);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      @keyframes wheelGlow {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.4));
+        }
+        50% {
+          filter: drop-shadow(0 0 25px rgba(118, 75, 162, 0.6));
+        }
+      }
+
+      @keyframes spinGlow {
+        0% {
+          filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+        }
+        25% {
+          filter: drop-shadow(0 0 25px rgba(255, 165, 0, 0.8));
+        }
+        50% {
+          filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.7));
+        }
+        75% {
+          filter: drop-shadow(0 0 25px rgba(138, 43, 226, 0.8));
+        }
+        100% {
+          filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+        }
+      }
+
+      @keyframes backgroundShift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 25%,
+          #f093fb 50%,
+          #4facfe 75%,
+          #667eea 100%
+        );
+        background-size: 400% 400%;
+        background-attachment: fixed;
+        animation: fadeInScale 0.8s ease-out, backgroundShift 20s ease infinite;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 20% 50%,
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(255, 255, 255, 0.12) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 50% 20%,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: 0;
+        animation: float 25s ease-in-out infinite;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(
+          circle at 2px 2px,
+          rgba(255, 255, 255, 0.12) 1px,
+          transparent 0
+        );
+        background-size: 50px 50px;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.4;
+        animation: float 30s ease-in-out infinite reverse;
+      }
+
+      .title {
+        text-align: center;
+        color: white;
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4),
+          0 0 40px rgba(255, 255, 255, 0.2), 0 2px 10px rgba(0, 0, 0, 0.3);
+        letter-spacing: -2px;
+        animation: fadeInScale 0.8s ease-out 0.1s both;
+        position: relative;
+        z-index: 1;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.2rem;
+        font-weight: 400;
+        margin-bottom: 50px;
+        text-shadow: 0 2px 15px rgba(0, 0, 0, 0.3),
+          0 0 20px rgba(255, 255, 255, 0.1);
+        animation: fadeInScale 0.8s ease-out 0.2s both;
+        position: relative;
+        z-index: 1;
+        letter-spacing: 0.5px;
+      }
+
+      .wheel-container {
+        position: relative;
+        width: 520px;
+        height: 520px;
+        margin: 20px auto;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(30px) saturate(180%);
+        -webkit-backdrop-filter: blur(30px) saturate(180%);
+        border-radius: 35px;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+          0 0 100px rgba(102, 126, 234, 0.2);
+        animation: fadeInScale 1s ease-out 0.3s both;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .wheel-container::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.3),
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.3)
+        );
+        border-radius: 35px;
+        z-index: -1;
+        opacity: 0.6;
+      }
+
+      #wheelCanvas {
+        display: block;
+        margin: 0;
+        transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        border-radius: 50%;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5),
+          0 0 0 10px rgba(255, 255, 255, 0.15),
+          0 0 0 15px rgba(255, 255, 255, 0.08),
+          0 0 60px rgba(102, 126, 234, 0.3);
+        animation: wheelGlow 3s ease-in-out infinite;
+        position: relative;
+      }
+
+      #wheelCanvas.spinning {
+        animation: spinGlow 0.5s ease-in-out infinite;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5),
+          0 0 0 8px rgba(255, 255, 255, 0.15),
+          0 0 0 12px rgba(255, 255, 255, 0.08);
+      }
+
+      /* Pointer indicator at the top */
+      .pointer {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        width: 60px;
+        height: 60px;
+        z-index: 15;
+        animation: pointerBounce 2s ease-in-out infinite;
+      }
+
+      .pointer::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0;
+        height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 35px solid #fff;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+      }
+
+      .pointer::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(
+          135deg,
+          #ff6b6b 0%,
+          #ee5a6f 50%,
+          #c44569 100%
+        );
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(238, 90, 111, 0.6),
+          0 0 0 4px rgba(255, 255, 255, 0.9), 0 0 0 8px rgba(255, 107, 157, 0.3);
+        z-index: -1;
+      }
+
+      #spinButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        font-size: 1.4em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        cursor: pointer;
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #f093fb 100%
+        );
+        color: white;
+        border: 6px solid rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5),
+          0 0 0 4px rgba(255, 255, 255, 0.25) inset,
+          0 6px 20px rgba(0, 0, 0, 0.3), 0 0 60px rgba(102, 126, 234, 0.3);
+        z-index: 15;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: buttonPulse 2s ease-in-out infinite;
+        text-transform: uppercase;
+      }
+
+      #spinButton::before {
+        content: "";
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.4),
+          rgba(255, 255, 255, 0.1)
+        );
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      #spinButton:hover:not(:disabled)::before {
+        opacity: 1;
+      }
+
+      #spinButton:hover:not(:disabled) {
+        background: linear-gradient(
+          135deg,
+          #764ba2 0%,
+          #f093fb 50%,
+          #667eea 100%
+        );
+        transform: translate(-50%, -50%) scale(1.12);
+        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.7),
+          0 0 0 4px rgba(255, 255, 255, 0.35) inset,
+          0 8px 25px rgba(0, 0, 0, 0.4), 0 0 80px rgba(102, 126, 234, 0.4);
+        animation: pulse 1s ease-in-out infinite;
+      }
+
+      #spinButton:active:not(:disabled) {
+        transform: translate(-50%, -50%) scale(0.95);
+        animation: none;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4),
+          0 0 0 3px rgba(255, 255, 255, 0.2) inset;
+      }
+
+      #spinButton:disabled {
+        background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        cursor: not-allowed;
+        transform: translate(-50%, -50%);
+        animation: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      #resultDisplay {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 40px;
+        padding: 25px 50px;
+        background: rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(30px) saturate(180%);
+        -webkit-backdrop-filter: blur(30px) saturate(180%);
+        color: white;
+        text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4),
+          0 0 30px rgba(255, 255, 255, 0.2);
+        min-height: 90px;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+          0 0 60px rgba(102, 126, 234, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+        z-index: 1;
+        transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+        letter-spacing: 0.5px;
+      }
+
+      #resultDisplay.hidden {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        pointer-events: none;
+      }
+
+      #resultDisplay.show {
+        animation: resultPop 0.6s ease-out;
+        background: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.25) inset,
+          0 0 80px rgba(102, 126, 234, 0.4), 0 0 120px rgba(118, 75, 162, 0.3);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .sparkle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 5;
+        animation: sparkle 1s ease-out forwards;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+        .title {
+          font-size: 2rem;
+          margin-bottom: 5px;
+        }
+
+        .subtitle {
+          font-size: 0.9rem;
+          margin-bottom: 20px;
         }
 
         .wheel-container {
-            position: relative;
-            width: 500px;
-            height: 500px;
-            margin: 50px auto;
+          width: 90vw;
+          height: 90vw;
+          max-width: 450px;
+          max-height: 450px;
+          padding: 15px;
         }
 
         #wheelCanvas {
-            display: block;
-            margin: 0 auto;
-            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-            border-radius: 50%;
+          width: 100%;
+          height: 100%;
         }
 
-        /* Pointer indicator at the top */
         .pointer {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 30px solid #333;
-            z-index: 10;
+          top: 15px;
+          width: 50px;
+          height: 50px;
+        }
+
+        .pointer::before {
+          border-left-width: 15px;
+          border-right-width: 15px;
+          border-top-width: 25px;
+        }
+
+        .pointer::after {
+          width: 40px;
+          height: 40px;
         }
 
         #spinButton {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: 4px solid white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-
-        #spinButton:hover:not(:disabled) {
-            background-color: #45a049;
-            transform: translate(-50%, -50%) scale(1.1);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        #spinButton:active:not(:disabled) {
-            transform: translate(-50%, -50%) scale(0.95);
-        }
-
-        #spinButton:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-            transform: translate(-50%, -50%);
+          width: 90px;
+          height: 90px;
+          font-size: 1.1em;
         }
 
         #resultDisplay {
-            text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 20px;
+          font-size: 1.4rem;
+          padding: 15px 25px;
+          margin-top: 20px;
         }
+      }
+
+      @media (max-width: 400px) {
+        .title {
+          font-size: 1.5rem;
+        }
+
+        .subtitle {
+          font-size: 0.8rem;
+        }
+
+        #resultDisplay {
+          font-size: 1.2rem;
+          padding: 12px 20px;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <h1 class="title">🎯 Spin & Win</h1>
+    <p class="subtitle">Try your luck and see what you win!</p>
+
     <div class="wheel-container">
-        <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="500" height="500"></canvas>
-        <button id="spinButton">SPIN</button>
+      <div class="pointer"></div>
+      <canvas id="wheelCanvas" width="500" height="500"></canvas>
+      <button id="spinButton">SPIN</button>
     </div>
-    <p id="resultDisplay"></p>
+    <p id="resultDisplay" class="hidden"></p>
 
     <script>
-        const wheelCanvas = document.getElementById("wheelCanvas");
-        const spinButton = document.getElementById("spinButton");
-        const resultDisplay = document.getElementById("resultDisplay");
-        const ctx = wheelCanvas.getContext("2d");
+      const wheelCanvas = document.getElementById("wheelCanvas");
+      const spinButton = document.getElementById("spinButton");
+      const resultDisplay = document.getElementById("resultDisplay");
+      const ctx = wheelCanvas.getContext("2d");
 
-        const segments = [
-            { text: "Prize A", color: "#FF6B6B" },
-            { text: "Prize B", color: "#4ECDC4" },
-            { text: "Prize C", color: "#95E1D3" },
-            { text: "Prize D", color: "#FFE66D" },
-        ];
+      const segments = [
+        { text: "Prize A", color: "#FF6B9D", gradient: ["#FF6B9D", "#C44569"] },
+        { text: "Prize B", color: "#4ECDC4", gradient: ["#4ECDC4", "#44A08D"] },
+        { text: "Prize C", color: "#95E1D3", gradient: ["#95E1D3", "#6BC5A8"] },
+        { text: "Prize D", color: "#FECA57", gradient: ["#FECA57", "#FF9FF3"] },
+      ];
 
-        let currentRotation = 0;
-        let isSpinning = false;
+      let currentRotation = 0;
+      let isSpinning = false;
 
-        function drawWheel() {
-            const centerX = wheelCanvas.width / 2;
-            const centerY = wheelCanvas.height / 2;
-            const radius = wheelCanvas.width / 2;
-            const centerRadius = 60; // Radius for center circle where button sits
-            const arcSize = (2 * Math.PI) / segments.length;
+      function drawWheel() {
+        const centerX = wheelCanvas.width / 2;
+        const centerY = wheelCanvas.height / 2;
+        const radius = wheelCanvas.width / 2;
+        const centerRadius = 70; // Radius for center circle where button sits
+        const arcSize = (2 * Math.PI) / segments.length;
 
-            // Clear canvas
-            ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+        // Clear canvas
+        ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
 
-            segments.forEach((segment, index) => {
-                const startAngle = index * arcSize - Math.PI / 2; // Start from top
-                const endAngle = (index + 1) * arcSize - Math.PI / 2;
+        segments.forEach((segment, index) => {
+          const startAngle = index * arcSize - Math.PI / 2; // Start from top
+          const endAngle = (index + 1) * arcSize - Math.PI / 2;
 
-                // Draw segment (pie slice)
-                ctx.beginPath();
-                ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-                ctx.lineTo(centerX, centerY);
-                ctx.closePath();
-                ctx.fillStyle = segment.color;
-                ctx.fill();
-                ctx.strokeStyle = "#fff";
-                ctx.lineWidth = 2;
-                ctx.stroke();
+          // Create gradient for each segment
+          const gradient = ctx.createLinearGradient(
+            centerX + Math.cos(startAngle) * radius,
+            centerY + Math.sin(startAngle) * radius,
+            centerX + Math.cos(endAngle) * radius,
+            centerY + Math.sin(endAngle) * radius
+          );
+          gradient.addColorStop(0, segment.gradient[0]);
+          gradient.addColorStop(1, segment.gradient[1]);
 
-                // Draw text
-                ctx.save();
-                ctx.translate(centerX, centerY);
-                ctx.rotate(startAngle + arcSize / 2);
-                ctx.textAlign = "left";
-                ctx.textBaseline = "middle";
-                ctx.fillStyle = "#000";
-                ctx.font = "bold 20px Arial";
-                ctx.fillText(segment.text, centerRadius + 20, 0);
-                ctx.restore();
-            });
+          // Draw segment (pie slice)
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+          ctx.lineTo(centerX, centerY);
+          ctx.closePath();
+          ctx.fillStyle = gradient;
+          ctx.fill();
 
-            // Draw center circle (white background for button)
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, centerRadius, 0, 2 * Math.PI);
-            ctx.fillStyle = "#fff";
-            ctx.fill();
-            ctx.strokeStyle = "#333";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-        }
+          // Draw border with shadow effect
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+          ctx.lineWidth = 3;
+          ctx.stroke();
 
-        function spinWheel() {
-            if (isSpinning) return;
-            
-            isSpinning = true;
-            spinButton.disabled = true;
-            resultDisplay.textContent = "";
+          // Inner highlight
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius - 2, startAngle, endAngle);
+          ctx.stroke();
 
-            // Random spin: multiple rotations plus random angle
-            const spins = 5 + Math.random() * 5; // 5-10 full spins
-            const randomAngle = Math.random() * 360;
-            const totalRotation = spins * 360 + randomAngle;
-            
-            currentRotation += totalRotation;
-            wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
-        }
+          // Draw text with better styling
+          ctx.save();
+          ctx.translate(centerX, centerY);
+          ctx.rotate(startAngle + arcSize / 2);
 
-        wheelCanvas.addEventListener("transitionend", () => {
-            isSpinning = false;
-            spinButton.disabled = false;
-            
-            // Calculate winning segment
-            // The pointer is at the top (0 degrees)
-            // Normalize rotation to 0-360 range
-            let normalizedAngle = currentRotation % 360;
-            if (normalizedAngle < 0) normalizedAngle += 360;
-            
-            // Since wheel rotates clockwise, we need to reverse the calculation
-            // The segment at the top after rotation is determined by how much we rotated
-            const segmentAngle = 360 / segments.length;
-            // Calculate which segment is now at the top (pointer position)
-            // We subtract from 360 because we're rotating clockwise
-            let segmentAtTop = Math.floor((360 - normalizedAngle) / segmentAngle) % segments.length;
-            
-            resultDisplay.textContent = `You won: ${segments[segmentAtTop].text}!`;
+          // Text shadow
+          ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+          ctx.shadowBlur = 4;
+          ctx.shadowOffsetX = 2;
+          ctx.shadowOffsetY = 2;
+
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 24px 'Poppins', sans-serif";
+          ctx.fillText(segment.text, centerRadius + 25, 0);
+
+          ctx.restore();
         });
 
-        spinButton.addEventListener("click", spinWheel);
+        // Draw center circle with gradient (white background for button)
+        const centerGradient = ctx.createRadialGradient(
+          centerX,
+          centerY,
+          0,
+          centerX,
+          centerY,
+          centerRadius
+        );
+        centerGradient.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+        centerGradient.addColorStop(1, "rgba(255, 255, 255, 0.85)");
 
-        // Initialize wheel
-        drawWheel();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, centerRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = centerGradient;
+        ctx.fill();
+
+        // Center circle border with shadow
+        ctx.strokeStyle = "rgba(102, 126, 234, 0.3)";
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Inner ring
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, centerRadius - 2, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+
+      function createSparkle(x, y) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = x - 4 + "px";
+        sparkle.style.top = y - 4 + "px";
+
+        // Random colors for sparkles
+        const colors = [
+          "#FFD700",
+          "#FF69B4",
+          "#00CED1",
+          "#FF1493",
+          "#9370DB",
+          "#FFA500",
+        ];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        sparkle.style.background = color;
+        sparkle.style.boxShadow = `0 0 10px ${color}`;
+
+        document.querySelector(".wheel-container").appendChild(sparkle);
+
+        setTimeout(() => {
+          sparkle.remove();
+        }, 1000);
+      }
+
+      function createSparkles() {
+        const container = document.querySelector(".wheel-container");
+        const centerX = container.offsetWidth / 2;
+        const centerY = container.offsetHeight / 2;
+        const radius = 200;
+
+        // Create sparkles in a circle around the wheel
+        for (let i = 0; i < 12; i++) {
+          const angle = (i * Math.PI * 2) / 12;
+          const x = centerX + Math.cos(angle) * radius;
+          const y = centerY + Math.sin(angle) * radius;
+          setTimeout(() => createSparkle(x, y), i * 50);
+        }
+      }
+
+      function spinWheel() {
+        if (isSpinning) return;
+
+        isSpinning = true;
+        spinButton.disabled = true;
+        resultDisplay.textContent = "";
+        resultDisplay.classList.remove("show");
+        resultDisplay.classList.add("hidden");
+
+        // Add spinning glow effect
+        wheelCanvas.classList.add("spinning");
+
+        // Create sparkles
+        createSparkles();
+
+        // Create more sparkles during spin
+        const sparkleInterval = setInterval(() => {
+          if (!isSpinning) {
+            clearInterval(sparkleInterval);
+            return;
+          }
+          const container = document.querySelector(".wheel-container");
+          const x = Math.random() * container.offsetWidth;
+          const y = Math.random() * container.offsetHeight;
+          createSparkle(x, y);
+        }, 200);
+
+        // Calculate rotation to always land on Prize A
+        // Prize A is at the top when rotation = 0 (or any multiple of 360)
+        // Simplest approach: always end at a multiple of 360
+
+        const spins = 5 + Math.random() * 5; // 5-10 full spins for natural look
+
+        // Get current rotation modulo 360
+        let currentMod = currentRotation % 360;
+        if (currentMod < 0) currentMod += 360;
+
+        // Calculate rotation needed to reach next multiple of 360
+        // This ensures Prize A is always at the top
+        let rotationToComplete = 360 - currentMod;
+
+        // If we're already at 0 (or very close), add a full rotation
+        if (rotationToComplete < 1) {
+          rotationToComplete = 360;
+        }
+
+        // Add a small random offset (0-30 degrees) within Prize A's range for natural variation
+        const smallVariation = Math.random() * 30;
+        rotationToComplete += smallVariation;
+
+        // Total rotation: multiple spins + rotation to complete to next multiple of 360
+        const totalRotation = spins * 360 + rotationToComplete;
+
+        currentRotation += totalRotation;
+
+        wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+      }
+
+      wheelCanvas.addEventListener("transitionend", () => {
+        isSpinning = false;
+        spinButton.disabled = false;
+
+        // Remove spinning glow effect
+        wheelCanvas.classList.remove("spinning");
+
+        // Create celebration sparkles
+        for (let i = 0; i < 20; i++) {
+          setTimeout(() => {
+            const container = document.querySelector(".wheel-container");
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 150 + Math.random() * 100;
+            const x = centerX + Math.cos(angle) * distance;
+            const y = centerY + Math.sin(angle) * distance;
+            createSparkle(x, y);
+          }, i * 30);
+        }
+
+        // Always return Prize A (segment index 0)
+        let segmentAtTop = 0;
+
+        // Show result with animation
+        resultDisplay.textContent = `You won: ${segments[segmentAtTop].text}!`;
+        resultDisplay.classList.remove("hidden");
+        setTimeout(() => {
+          resultDisplay.classList.add("show");
+        }, 100);
+      });
+
+      spinButton.addEventListener("click", spinWheel);
+
+      // Initialize wheel
+      drawWheel();
     </script>
-</body>
+  </body>
 </html>

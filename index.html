@@ -1222,6 +1222,23 @@
     </div>
 
     <script>
+      // Get query parameters from URL
+      function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          orderId: params.get('orderId') || null,
+          name: params.get('name') || null,
+          phone: params.get('phone') || null
+        };
+      }
+
+      // Get and log query parameters
+      const queryParams = getQueryParams();
+      console.log('Query Parameters:', queryParams);
+      console.log('Order ID:', queryParams.orderId);
+      console.log('Name:', queryParams.name);
+      console.log('Phone:', queryParams.phone);
+
       const wheelCanvas = document.getElementById("wheelCanvas");
       const spinButton = document.getElementById("spinButton");
       const rewardPage = document.getElementById("rewardPage");

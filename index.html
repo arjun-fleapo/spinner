@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Premium Spinner Wheel</title>
@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
-<style>
+    <style>
       @keyframes fadeInScale {
         from {
           opacity: 0;
@@ -277,7 +277,12 @@
         font-size: 2.2rem;
         font-weight: 700;
         margin-bottom: 12px;
-        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD700 100%);
+        background: linear-gradient(
+          135deg,
+          #ff6b35 0%,
+          #f7931e 50%,
+          #ffd700 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -302,8 +307,8 @@
         letter-spacing: 0.3px;
       }
 
-    .wheel-container {
-  position: relative;
+      .wheel-container {
+        position: relative;
         width: 520px;
         height: 520px;
         margin: 20px auto;
@@ -339,16 +344,15 @@
         border-radius: 24px;
         z-index: -1;
         opacity: 0.5;
-}
+      }
 
-#wheelCanvas {
-  display: block;
+      #wheelCanvas {
+        display: block;
         margin: 0;
         transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
         border-radius: 50%;
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5),
-          0 0 0 8px rgba(255, 255, 255, 0.1),
-          0 0 0 12px rgba(255, 107, 53, 0.2),
+          0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 0 12px rgba(255, 107, 53, 0.2),
           0 0 50px rgba(255, 107, 53, 0.3);
         animation: wheelGlow 3s ease-in-out infinite;
         position: relative;
@@ -398,9 +402,9 @@
         height: 50px;
         background: linear-gradient(
           135deg,
-          #FF6B35 0%,
-          #F7931E 50%,
-          #FFD700 100%
+          #ff6b35 0%,
+          #f7931e 50%,
+          #ffd700 100%
         );
         border-radius: 50%;
         box-shadow: 0 4px 12px rgba(255, 107, 53, 0.5),
@@ -422,16 +426,15 @@
         cursor: pointer;
         background: linear-gradient(
           135deg,
-          #FF6B35 0%,
-          #F7931E 50%,
-          #FFD700 100%
+          #ff6b35 0%,
+          #f7931e 50%,
+          #ffd700 100%
         );
         color: white;
         border: 4px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4),
           0 0 0 2px rgba(255, 255, 255, 0.15) inset,
-          0 4px 16px rgba(0, 0, 0, 0.3),
-          0 0 40px rgba(255, 107, 53, 0.3);
+          0 4px 16px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 107, 53, 0.3);
         z-index: 15;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         animation: buttonPulse 2s ease-in-out infinite;
@@ -463,15 +466,14 @@
       #spinButton:hover:not(:disabled) {
         background: linear-gradient(
           135deg,
-          #F7931E 0%,
-          #FFD700 50%,
-          #FF6B35 100%
+          #f7931e 0%,
+          #ffd700 50%,
+          #ff6b35 100%
         );
         transform: translate(-50%, -50%) scale(1.08);
         box-shadow: 0 12px 40px rgba(255, 107, 53, 0.5),
           0 0 0 2px rgba(255, 255, 255, 0.2) inset,
-          0 6px 20px rgba(0, 0, 0, 0.3),
-          0 0 60px rgba(255, 107, 53, 0.4);
+          0 6px 20px rgba(0, 0, 0, 0.3), 0 0 60px rgba(255, 107, 53, 0.4);
         animation: pulse 1s ease-in-out infinite;
       }
 
@@ -556,14 +558,18 @@
         width: 100px;
         height: 100px;
         margin: 0 auto 24px;
-        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD700 100%);
+        background: linear-gradient(
+          135deg,
+          #ff6b35 0%,
+          #f7931e 50%,
+          #ffd700 100%
+        );
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5),
-          0 0 0 4px rgba(255, 107, 53, 0.3),
-          0 0 60px rgba(255, 107, 53, 0.4);
+          0 0 0 4px rgba(255, 107, 53, 0.3), 0 0 60px rgba(255, 107, 53, 0.4);
         position: relative;
         animation: fadeInScale 0.6s ease-out 0.2s both;
       }
@@ -579,7 +585,12 @@
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 12px;
-        background: linear-gradient(135deg, #ffffff 0%, #FF6B35 50%, #F7931E 100%);
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #ff6b35 50%,
+          #f7931e 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -599,7 +610,11 @@
       }
 
       .reward-item {
-        background: linear-gradient(135deg, rgba(255, 107, 53, 0.25) 0%, rgba(247, 147, 30, 0.2) 100%);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 53, 0.25) 0%,
+          rgba(247, 147, 30, 0.2) 100%
+        );
         border: 1px solid rgba(255, 107, 53, 0.4);
         border-radius: 16px;
         padding: 20px 32px;
@@ -635,7 +650,12 @@
       .claim-button {
         width: 100%;
         padding: 18px 32px;
-        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD700 100%);
+        background: linear-gradient(
+          135deg,
+          #ff6b35 0%,
+          #f7931e 50%,
+          #ffd700 100%
+        );
         color: white;
         border: none;
         border-radius: 16px;
@@ -652,7 +672,12 @@
       }
 
       .claim-button:hover {
-        background: linear-gradient(135deg, #F7931E 0%, #FFD700 50%, #FF6B35 100%);
+        background: linear-gradient(
+          135deg,
+          #f7931e 0%,
+          #ffd700 50%,
+          #ff6b35 100%
+        );
         transform: translateY(-2px);
         box-shadow: 0 12px 32px rgba(255, 107, 53, 0.6),
           0 0 0 2px rgba(255, 255, 255, 0.2) inset,
@@ -731,14 +756,18 @@
         width: 85px;
         height: 85px;
         margin: 0 auto 20px;
-        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD700 100%);
+        background: linear-gradient(
+          135deg,
+          #ff6b35 0%,
+          #f7931e 50%,
+          #ffd700 100%
+        );
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5),
-          0 0 0 4px rgba(255, 107, 53, 0.3),
-          0 0 60px rgba(255, 107, 53, 0.4);
+          0 0 0 4px rgba(255, 107, 53, 0.3), 0 0 60px rgba(255, 107, 53, 0.4);
         position: relative;
         animation: fadeInScale 0.6s ease-out 0.2s both;
       }
@@ -756,7 +785,12 @@
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 24px;
-        background: linear-gradient(135deg, #ffffff 0%, #FF6B35 50%, #F7931E 100%);
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #ff6b35 50%,
+          #f7931e 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -792,7 +826,7 @@
 
       .claimed-list-item::before {
         content: "✓";
-        color: #FF6B35;
+        color: #ff6b35;
         font-size: 18px;
         font-weight: bold;
         background: rgba(255, 107, 53, 0.2);
@@ -818,7 +852,12 @@
       .get-started-button {
         width: 100%;
         padding: 14px 28px;
-        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD700 100%);
+        background: linear-gradient(
+          135deg,
+          #ff6b35 0%,
+          #f7931e 50%,
+          #ffd700 100%
+        );
         color: white;
         border: none;
         border-radius: 12px;
@@ -835,7 +874,12 @@
       }
 
       .get-started-button:hover {
-        background: linear-gradient(135deg, #F7931E 0%, #FFD700 50%, #FF6B35 100%);
+        background: linear-gradient(
+          135deg,
+          #f7931e 0%,
+          #ffd700 50%,
+          #ff6b35 100%
+        );
         transform: translateY(-2px);
         box-shadow: 0 12px 32px rgba(255, 107, 53, 0.6),
           0 0 0 2px rgba(255, 255, 255, 0.2) inset,
@@ -899,9 +943,9 @@
         .pointer::after {
           width: 40px;
           height: 40px;
-}
+        }
 
-#spinButton {
+        #spinButton {
           width: 90px;
           height: 90px;
           font-size: 1.1em;
@@ -1112,8 +1156,8 @@
           padding: 12px 20px;
           font-size: 0.9rem;
         }
-}
-</style>
+      }
+    </style>
   </head>
   <body>
     <!-- Payment Success Section -->
@@ -1126,7 +1170,9 @@
     <!-- Reward Section -->
     <div class="reward-section">
       <h2 class="reward-title">Claim Your Exclusive Reward!</h2>
-      <p class="reward-subtitle">Spin the wheel to unlock your bonus surprise</p>
+      <p class="reward-subtitle">
+        Spin the wheel to unlock your bonus surprise
+      </p>
     </div>
 
     <!-- Spinner Wheel -->
@@ -1155,47 +1201,78 @@
         <div class="claimed-success-icon"></div>
         <h2 class="reward-claimed-title">Reward Claimed Successfully!</h2>
         <ul class="claimed-list">
-          <li class="claimed-list-item">Your <span id="claimedRewardName"></span> has been activated</li>
-          <li class="claimed-list-item">All premium features are now accessible</li>
-          <li class="claimed-list-item">Confirmation email sent to your inbox</li>
+          <li class="claimed-list-item">
+            Your <span id="claimedRewardName"></span> has been activated
+          </li>
+          <li class="claimed-list-item">
+            All premium features are now accessible
+          </li>
+          <li class="claimed-list-item">
+            Confirmation email sent to your inbox
+          </li>
         </ul>
-        <p class="claimed-message">Our team will reach out within the next 48 hours to help you get started with your exclusive rewards.</p>
-        <button class="get-started-button" id="getStartedButton">Get Started</button>
+        <p class="claimed-message">
+          Our team will reach out within the next 48 hours to help you get
+          started with your exclusive rewards.
+        </p>
+        <button class="get-started-button" id="getStartedButton">
+          Get Started
+        </button>
       </div>
     </div>
 
-<script>
-    const wheelCanvas = document.getElementById("wheelCanvas");
-const spinButton = document.getElementById("spinButton");
-const rewardPage = document.getElementById("rewardPage");
-const rewardItemText = document.getElementById("rewardItemText");
-const claimButton = document.getElementById("claimButton");
-const rewardClaimedPage = document.getElementById("rewardClaimedPage");
-const claimedRewardName = document.getElementById("claimedRewardName");
-const getStartedButton = document.getElementById("getStartedButton");
-const ctx = wheelCanvas.getContext("2d");
+    <script>
+      const wheelCanvas = document.getElementById("wheelCanvas");
+      const spinButton = document.getElementById("spinButton");
+      const rewardPage = document.getElementById("rewardPage");
+      const rewardItemText = document.getElementById("rewardItemText");
+      const claimButton = document.getElementById("claimButton");
+      const rewardClaimedPage = document.getElementById("rewardClaimedPage");
+      const claimedRewardName = document.getElementById("claimedRewardName");
+      const getStartedButton = document.getElementById("getStartedButton");
+      const ctx = wheelCanvas.getContext("2d");
 
-const segments = [
-        { text: "TagMango Hoodie", color: "#FF6B35", gradient: ["#FF6B35", "#F7931E"] },
-        { text: "Funnel Scaling Masterclass Recording", color: "#F7931E", gradient: ["#F7931E", "#FFD700"] },
-        { text: "AI Fiesta (AI Super Subscription)", color: "#FFD700", gradient: ["#FFD700", "#FFA500"] },
-        { text: "Unlock 3 Month's Discount on Pro Annual Subscription + Zoom Webinar (500 people)", color: "#FFA500", gradient: ["#FFA500", "#FF6B35"] },
-        { text: "AI Super Prompts for Funnel Launch", color: "#FF8C42", gradient: ["#FF8C42", "#F7931E"] },
-];
+      const segments = [
+        {
+          text: "TagMango Hoodie",
+          color: "#FF6B35",
+          gradient: ["#FF6B35", "#F7931E"],
+        },
+        {
+          text: "Funnel Scaling Masterclass Recording",
+          color: "#F7931E",
+          gradient: ["#F7931E", "#FFD700"],
+        },
+        {
+          text: "AI Fiesta (AI Super Subscription)",
+          color: "#FFD700",
+          gradient: ["#FFD700", "#FFA500"],
+        },
+        {
+          text: "Unlock 3 Month's Discount on Pro Annual Subscription + Zoom Webinar (500 people)",
+          color: "#FFA500",
+          gradient: ["#FFA500", "#FF6B35"],
+        },
+        {
+          text: "AI Super Prompts for Funnel Launch",
+          color: "#FF8C42",
+          gradient: ["#FF8C42", "#F7931E"],
+        },
+      ];
 
-let currentRotation = 0;
+      let currentRotation = 0;
       let isSpinning = false;
 
-function drawWheel() {
+      function drawWheel() {
         const centerX = wheelCanvas.width / 2;
         const centerY = wheelCanvas.height / 2;
         const radius = wheelCanvas.width / 2;
         const centerRadius = 75;
-  const arcSize = (2 * Math.PI) / segments.length;
+        const arcSize = (2 * Math.PI) / segments.length;
 
         ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
 
-  segments.forEach((segment, index) => {
+        segments.forEach((segment, index) => {
           const startAngle = index * arcSize - Math.PI / 2;
           const endAngle = (index + 1) * arcSize - Math.PI / 2;
 
@@ -1208,13 +1285,13 @@ function drawWheel() {
           gradient.addColorStop(0, segment.gradient[0]);
           gradient.addColorStop(1, segment.gradient[1]);
 
-    ctx.beginPath();
+          ctx.beginPath();
           ctx.moveTo(centerX, centerY);
           ctx.arc(centerX, centerY, radius, startAngle, endAngle);
           ctx.lineTo(centerX, centerY);
           ctx.closePath();
           ctx.fillStyle = gradient;
-    ctx.fill();
+          ctx.fill();
 
           ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
           ctx.lineWidth = 3;
@@ -1226,7 +1303,7 @@ function drawWheel() {
           ctx.arc(centerX, centerY, radius - 2, startAngle, endAngle);
           ctx.stroke();
 
-    ctx.save();
+          ctx.save();
           ctx.translate(centerX, centerY);
           ctx.rotate(startAngle + arcSize / 2);
 
@@ -1238,7 +1315,7 @@ function drawWheel() {
           ctx.textAlign = "left";
           ctx.textBaseline = "middle";
           ctx.fillStyle = "#fff";
-          
+
           const maxWidth = radius - centerRadius - 30;
           let fontSize = 18;
           if (segment.text.length > 40) {
@@ -1246,15 +1323,15 @@ function drawWheel() {
           } else if (segment.text.length > 30) {
             fontSize = 16;
           }
-          
+
           ctx.font = `bold ${fontSize}px 'Poppins', sans-serif`;
-          
-          const words = segment.text.split(' ');
+
+          const words = segment.text.split(" ");
           const lines = [];
           let currentLine = words[0];
-          
+
           for (let i = 1; i < words.length; i++) {
-            const testLine = currentLine + ' ' + words[i];
+            const testLine = currentLine + " " + words[i];
             const metrics = ctx.measureText(testLine);
             if (metrics.width > maxWidth && currentLine.length > 0) {
               lines.push(currentLine);
@@ -1264,15 +1341,19 @@ function drawWheel() {
             }
           }
           lines.push(currentLine);
-          
+
           const lineHeight = fontSize + 4;
-          const startY = -(lines.length - 1) * lineHeight / 2;
+          const startY = (-(lines.length - 1) * lineHeight) / 2;
           lines.forEach((line, lineIndex) => {
-            ctx.fillText(line, centerRadius + 20, startY + lineIndex * lineHeight);
+            ctx.fillText(
+              line,
+              centerRadius + 20,
+              startY + lineIndex * lineHeight
+            );
           });
 
-    ctx.restore();
-  });
+          ctx.restore();
+        });
 
         const centerGradient = ctx.createRadialGradient(
           centerX,
@@ -1337,13 +1418,13 @@ function drawWheel() {
           const y = centerY + Math.sin(angle) * radius;
           setTimeout(() => createSparkle(x, y), i * 50);
         }
-}
+      }
 
-function spinWheel() {
+      function spinWheel() {
         if (isSpinning) return;
 
         isSpinning = true;
-  spinButton.disabled = true;
+        spinButton.disabled = true;
         rewardPage.classList.remove("show");
 
         wheelCanvas.classList.add("spinning");
@@ -1363,59 +1444,60 @@ function spinWheel() {
         // Always land on "AI Fiesta" (segment index 2)
         // With 5 segments, each segment is 72 degrees
         // Segment 2 (144-216°) is at the top when rotation mod 360 is in range 144-216 degrees
-        
+
         const spins = 5 + Math.random() * 5;
         let mod = currentRotation % 360;
         if (mod < 0) mod += 360;
 
         const targetMod = 162 + Math.random() * 36;
-        
+
         let rotationToTarget;
         if (mod <= targetMod) {
           rotationToTarget = targetMod - mod;
         } else {
-          rotationToTarget = (360 - mod) + targetMod;
+          rotationToTarget = 360 - mod + targetMod;
         }
-        
+
         if (rotationToTarget < 360) {
           rotationToTarget += 360;
         }
 
         const totalRotation = spins * 360 + rotationToTarget;
         currentRotation = currentRotation + totalRotation;
-        
+
         const finalMod = currentRotation % 360;
         if (finalMod < 144 || finalMod > 216) {
           const target = 162 + Math.random() * 36;
           const adjustment = target - finalMod;
           currentRotation += adjustment;
         }
-  wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
-}
+        wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+      }
 
-wheelCanvas.addEventListener("transitionend", () => {
+      wheelCanvas.addEventListener("transitionend", () => {
         if (!isSpinning) {
           return;
         }
 
         isSpinning = false;
-  spinButton.disabled = false;
+        spinButton.disabled = false;
 
         // Force rotation to segment 2's range (144-216 degrees) to ensure "AI Fiesta" is at top
         const finalMod = currentRotation % 360;
         const targetMod = 162 + Math.random() * 36;
-        
+
         let adjustment = targetMod - finalMod;
         if (adjustment > 180) adjustment -= 360;
         if (adjustment < -180) adjustment += 360;
-        
+
         currentRotation = currentRotation + adjustment;
-        
-        wheelCanvas.style.transition = 'none';
+
+        wheelCanvas.style.transition = "none";
         wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
-        
+
         setTimeout(() => {
-          wheelCanvas.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+          wheelCanvas.style.transition =
+            "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
         }, 100);
 
         wheelCanvas.classList.remove("spinning");
@@ -1437,11 +1519,11 @@ wheelCanvas.addEventListener("transitionend", () => {
         setTimeout(() => {
           rewardPage.classList.add("show");
         }, 1500);
-});
+      });
 
-spinButton.addEventListener("click", spinWheel);
+      spinButton.addEventListener("click", spinWheel);
 
-claimButton.addEventListener("click", () => {
+      claimButton.addEventListener("click", () => {
         rewardPage.classList.remove("show");
         claimedRewardName.textContent = rewardItemText.textContent;
         setTimeout(() => {
@@ -1449,19 +1531,20 @@ claimButton.addEventListener("click", () => {
         }, 300);
       });
 
-getStartedButton.addEventListener("click", () => {
+      getStartedButton.addEventListener("click", () => {
         rewardClaimedPage.classList.remove("show");
       });
 
-drawWheel();
-      
-      wheelCanvas.style.transition = 'none';
+      drawWheel();
+
+      wheelCanvas.style.transition = "none";
       currentRotation = 0;
-      wheelCanvas.style.transform = 'rotate(0deg)';
-      
+      wheelCanvas.style.transform = "rotate(0deg)";
+
       setTimeout(() => {
-        wheelCanvas.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+        wheelCanvas.style.transition =
+          "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
       }, 100);
-</script>
-</body>
+    </script>
+  </body>
 </html>

@@ -842,10 +842,10 @@
 
       .claimed-message {
         color: rgba(255, 255, 255, 0.85);
-        font-size: 0.8rem;
-        line-height: 1.5;
-        margin-bottom: 24px;
-        text-align: left;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+        text-align: center;
         animation: fadeInScale 0.6s ease-out 0.5s both;
       }
 
@@ -1195,7 +1195,7 @@
         <div class="reward-item">
           <span class="reward-item-text" id="rewardItemText"></span>
         </div>
-        <button class="claim-button" id="claimButton">Claim Reward</button>
+        <button class="claim-button" id="claimButton">Tap To Claim Reward</button>
       </div>
     </div>
 
@@ -1204,24 +1204,10 @@
       <div class="reward-claimed-card">
         <div class="claimed-success-icon"></div>
         <h2 class="reward-claimed-title">Reward Claimed Successfully!</h2>
-        <ul class="claimed-list">
-          <li class="claimed-list-item">
-            Your <span id="claimedRewardName"></span> has been activated
-          </li>
-          <li class="claimed-list-item">
-            All premium features are now accessible
-          </li>
-          <li class="claimed-list-item">
-            Confirmation email sent to your inbox
-          </li>
-        </ul>
         <p class="claimed-message">
           Our team will reach out within the next 48 hours to help you get
           started with your exclusive rewards.
         </p>
-        <button class="get-started-button" id="getStartedButton">
-          Get Started
-        </button>
       </div>
     </div>
 
@@ -1253,8 +1239,6 @@
       const rewardItemText = document.getElementById("rewardItemText");
       const claimButton = document.getElementById("claimButton");
       const rewardClaimedPage = document.getElementById("rewardClaimedPage");
-      const claimedRewardName = document.getElementById("claimedRewardName");
-      const getStartedButton = document.getElementById("getStartedButton");
       const ctx = wheelCanvas.getContext("2d");
 
       const segments = [
@@ -1550,14 +1534,9 @@
 
       claimButton.addEventListener("click", () => {
         rewardPage.classList.remove("show");
-        claimedRewardName.textContent = rewardItemText.textContent;
         setTimeout(() => {
           rewardClaimedPage.classList.add("show");
         }, 300);
-      });
-
-      getStartedButton.addEventListener("click", () => {
-        rewardClaimedPage.classList.remove("show");
       });
 
       drawWheel();

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta mongoId="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Premium Spinner Wheel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1220,18 +1220,16 @@
 
         const params = new URLSearchParams(window.location.search);
         return {
-          orderId: params.get("orderId") || null,
-          name: params.get("name") || null,
-          phone: params.get("phone") || null,
+          userId: params.get("userId") || null,
+          mongoId: params.get("mongoId") || null,
         };
       }
 
       // Get and log query parameters
       const queryParams = getQueryParams();
       console.log("Query Parameters:", queryParams);
-      console.log("Order ID:", queryParams.orderId);
-      console.log("Name:", queryParams.name);
-      console.log("Phone:", queryParams.phone);
+      console.log("User ID:", queryParams.userId);
+      console.log("Mongo ID", queryParams.mongoId);
 
       const wheelCanvas = document.getElementById("wheelCanvas");
       const spinButton = document.getElementById("spinButton");

@@ -53,7 +53,7 @@ export function RewardPage({ show, rewardText, onClaimSuccess, onError }: Reward
             dangerouslySetInnerHTML={{
               __html: rewardText.replace(
                 /Zoom/g,
-                '<img src="https://logo.svgcdn.com/logos/zoom.png" alt="Zoom" style="height: 3em; vertical-align: middle; display: inline-block; margin: 0 4px;">'
+                '<img src="https://tagmango.com/staticassets/-zoom_communications_logo-2-1-aa5ef39a561166fabfbb7abd15eb92e5.svg" alt="Zoom" style="height: 1.2em; vertical-align: middle; display: inline-block; margin: 0 4px;">'
               ),
             }}
           />

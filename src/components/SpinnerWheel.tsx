@@ -14,11 +14,10 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
   const currentRotationRef = useRef(0);
   const zoomLogoRef = useRef<HTMLImageElement | null>(null);
   const [zoomLogoLoaded, setZoomLogoLoaded] = useState(false);
-
   useEffect(() => {
     const zoomLogo = new Image();
     zoomLogo.crossOrigin = 'anonymous';
-    zoomLogo.src = 'https://logo.svgcdn.com/logos/zoom.png';
+    zoomLogo.src = 'https://tagmango.com/staticassets/-zoom_communications_logo-2-1-aa5ef39a561166fabfbb7abd15eb92e5.svg';
     zoomLogo.onload = () => {
       setZoomLogoLoaded(true);
       drawWheel();
@@ -123,7 +122,7 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
 
       const lineHeight = fontSize + 6;
       const startY = (-(lines.length - 1) * lineHeight) / 2;
-      const logoSize = fontSize * 3.2;
+      const logoSize = fontSize * 2.2;
 
       lines.forEach((line, lineIndex) => {
         if (line.includes('Zoom') && zoomLogoLoaded && index === 2 && zoomLogoRef.current) {
@@ -333,7 +332,40 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
         }, i * 30);
       }
 
-      const segmentAtTop = 1; // AI Fiesta segment (index 1)
+      // Calculate which segment is at the top (pointer position)
+      // The pointer is at the top (0 degrees or -90 degrees in canvas coordinates)
+      // When the wheel rotates, we need to find which segment's center aligns with the top
+      const arcSize = 360 / segments.length; // 72 degrees for 5 segments
+      const finalRotation = currentRotationRef.current % 360;
+      
+      // The top pointer is at 0 degrees (or 360 degrees)
+      // Segment centers are at: (index * arcSize) - 90 + (arcSize / 2)
+      // After rotation, segment center position = (original center + rotation) % 360
+      // We need to find which segment center is closest to 0 degrees (top)
+      
+      let segmentAtTop = 0;
+      let minDistance = 360;
+      
+      for (let i = 0; i < segments.length; i++) {
+        // Original segment center angle (in degrees, with 0 at top)
+        const segmentCenterOriginal = i * arcSize - 90 + arcSize / 2;
+        // After rotation, where is this segment center?
+        const segmentCenterRotated = (segmentCenterOriginal + finalRotation) % 360;
+        // Normalize to 0-360
+        const normalizedCenter = segmentCenterRotated < 0 ? segmentCenterRotated + 360 : segmentCenterRotated;
+        
+        // Distance from top (0 degrees), considering wrap-around
+        let distance = Math.abs(normalizedCenter);
+        if (distance > 180) {
+          distance = 360 - distance;
+        }
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          segmentAtTop = i;
+        }
+      }
+      
       onSpinComplete(segmentAtTop);
     };
 

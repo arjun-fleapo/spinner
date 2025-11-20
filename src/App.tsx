@@ -44,11 +44,14 @@ function App() {
 
   useEffect(() => {
     // Expose showToast globally for use in RewardPage
-    (window as any).showToast = showToast;
+    (window as Window & { showToast?: typeof showToast }).showToast = showToast;
   }, [showToast]);
 
-  const handleSpinComplete = (segmentIndex: number) => {
-    const reward = segments[segmentIndex].text;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleSpinComplete = (_segmentIndex: number) => {
+    // Always show Pro Annual + Zoom Webinar (segment index 2) regardless of where spinner stops
+    const proAnnualIndex = 2;
+    const reward = segments[proAnnualIndex].text;
     setRewardText(reward);
     setTimeout(() => {
       setShowRewardPage(true);

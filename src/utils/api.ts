@@ -20,3 +20,21 @@ export async function recordUserIntent(userId: string, mangoId: string) {
   return response.json();
 }
 
+export async function getUserIntent(userId: string, mangoId: string) {
+  const response = await fetch(
+    `https://api-prod-new.tagmango.com/spin-the-wheel/get-user-intent?userId=${userId}&mangoId=${mangoId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
+

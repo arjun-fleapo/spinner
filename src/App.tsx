@@ -4,9 +4,12 @@ import { RewardSection } from './components/RewardSection';
 import { SpinnerWheel } from './components/SpinnerWheel';
 import { RewardPage } from './components/RewardPage';
 import { RewardClaimedPage } from './components/RewardClaimedPage';
+import { RewardAlreadyClaimedPage } from './components/RewardAlreadyClaimedPage';
 import { ToastContainer } from './components/ToastContainer';
 import { useToast } from './hooks/useToast';
 import { Segment } from './types';
+import { getUserIntent } from './utils/api';
+import { getQueryParams } from './utils/queryParams';
 
 const segments: Segment[] = [
   {
@@ -40,12 +43,41 @@ function App() {
   const { toasts, showToast, removeToast } = useToast();
   const [showRewardPage, setShowRewardPage] = useState(false);
   const [showRewardClaimedPage, setShowRewardClaimedPage] = useState(false);
+  const [showRewardAlreadyClaimedPage, setShowRewardAlreadyClaimedPage] = useState(false);
   const [rewardText, setRewardText] = useState('');
+  const [isCheckingIntent, setIsCheckingIntent] = useState(true);
 
   useEffect(() => {
     // Expose showToast globally for use in RewardPage
     (window as Window & { showToast?: typeof showToast }).showToast = showToast;
   }, [showToast]);
+
+  useEffect(() => {
+    const checkUserIntent = async () => {
+      try {
+        const { userId, mangoId } = getQueryParams();
+        
+        if (!userId || !mangoId) {
+          setIsCheckingIntent(false);
+          return;
+        }
+
+        const response = await getUserIntent(userId, mangoId);
+        
+        if (response.code === 200 && response.result?.intent) {
+          // User has already claimed, show the already claimed page
+          setShowRewardAlreadyClaimedPage(true);
+        }
+      } catch (error) {
+        // If API fails, continue with normal flow
+        console.error('Error checking user intent:', error);
+      } finally {
+        setIsCheckingIntent(false);
+      }
+    };
+
+    checkUserIntent();
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleSpinComplete = (_segmentIndex: number) => {
@@ -68,6 +100,27 @@ function App() {
   const handleError = (message: string) => {
     showToast(message, 'error');
   };
+
+  // Don't show spinner if reward is already claimed
+  if (showRewardAlreadyClaimedPage) {
+    return (
+      <>
+        <RewardAlreadyClaimedPage show={showRewardAlreadyClaimedPage} />
+        <ToastContainer toasts={toasts} removeToast={removeToast} />
+      </>
+    );
+  }
+
+  // Show loading state while checking intent
+  if (isCheckingIntent) {
+    return (
+      <>
+        <PaymentSuccess />
+        <RewardSection />
+        <ToastContainer toasts={toasts} removeToast={removeToast} />
+      </>
+    );
+  }
 
   return (
     <>

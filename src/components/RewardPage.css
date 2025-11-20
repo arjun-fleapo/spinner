@@ -46,7 +46,7 @@
   backdrop-filter: blur(30px) saturate(150%);
   -webkit-backdrop-filter: blur(30px) saturate(150%);
   border-radius: 24px;
-  padding: 48px 40px;
+  padding: clamp(32px, 5vw, 48px) clamp(24px, 4vw, 40px);
   max-width: 650px;
   width: 90%;
   text-align: center;
@@ -60,8 +60,8 @@
 }
 
 .gift-icon {
-  width: 100px;
-  height: 100px;
+  width: clamp(70px, 12vw, 100px);
+  height: clamp(70px, 12vw, 100px);
   margin: 0 auto 24px;
   background: linear-gradient(
     135deg,
@@ -81,13 +81,13 @@
 
 .gift-icon::before {
   content: '🎁';
-  font-size: 56px;
+  font-size: clamp(40px, 8vw, 56px);
   line-height: 1;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
 }
 
 .congratulations-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 700;
   margin-bottom: 12px;
   background: linear-gradient(
@@ -104,14 +104,16 @@
   letter-spacing: 1px;
   animation: fadeInScale 0.6s ease-out 0.3s both;
   text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .unlocked-text {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 24px;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   animation: fadeInScale 0.6s ease-out 0.4s both;
+  line-height: 1.4;
 }
 
 .reward-item {
@@ -122,8 +124,8 @@
   );
   border: 1px solid rgba(255, 107, 53, 0.4);
   border-radius: 16px;
-  padding: 20px 32px;
-  margin-bottom: 32px;
+  padding: clamp(16px, 3vw, 20px) clamp(24px, 4vw, 32px);
+  margin-bottom: clamp(24px, 4vw, 32px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,20 +146,22 @@
 }
 
 .reward-item-text {
-  font-size: 1.3rem;
+  font-size: clamp(0.95rem, 3vw, 1.3rem);
   font-weight: 600;
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(255, 107, 53, 0.4),
     0 0 15px rgba(247, 147, 30, 0.3);
   letter-spacing: 0.3px;
+  line-height: 1.4;
+  word-wrap: break-word;
 }
 
 .reward-item-green {
   background: #0a0a0a;
   border: 2px solid #10b981;
   border-radius: 12px;
-  padding: 16px 24px;
-  margin-bottom: 32px;
+  padding: clamp(12px, 2.5vw, 16px) clamp(20px, 3.5vw, 24px);
+  margin-bottom: clamp(24px, 4vw, 32px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,17 +182,19 @@
 
 
 .reward-item-green-text {
-  font-size: 1.1rem;
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
   font-weight: 600;
   color: #10b981;
   text-shadow: 0 0 10px rgba(16, 185, 129, 0.8),
     0 0 20px rgba(16, 185, 129, 0.4);
   letter-spacing: 0.3px;
+  line-height: 1.4;
+  word-wrap: break-word;
 }
 
 .claim-button {
   width: 100%;
-  padding: 18px 32px;
+  padding: clamp(14px, 3vw, 18px) clamp(24px, 4vw, 32px);
   background: linear-gradient(
     135deg,
     #ff6b35 0%,
@@ -198,7 +204,7 @@
   color: white;
   border: none;
   border-radius: 16px;
-  font-size: 1.2rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(255, 107, 53, 0.5),
@@ -208,6 +214,7 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
   animation: fadeInScale 0.6s ease-out 0.6s both;
+  line-height: 1.4;
 }
 
 .claim-button:hover:not(:disabled) {
@@ -255,63 +262,81 @@
   vertical-align: middle;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .reward-card {
-    padding: 40px 32px;
-  }
-
-  .gift-icon {
-    width: 90px;
-    height: 90px;
-  }
-
-  .gift-icon::before {
-    font-size: 50px;
-  }
-
-  .congratulations-title {
-    font-size: 2.2rem;
-  }
-
-  .reward-item-text {
-    font-size: 1.2rem;
+    width: 95%;
+    padding: clamp(28px, 4vw, 40px) clamp(20px, 3vw, 32px);
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 600px) {
   .reward-card {
-    padding: 32px 24px;
-  }
-
-  .gift-icon {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 20px;
-  }
-
-  .gift-icon::before {
-    font-size: 44px;
-  }
-
-  .congratulations-title {
-    font-size: 2rem;
-  }
-
-  .unlocked-text {
-    font-size: 1rem;
+    width: 95%;
+    padding: clamp(24px, 4vw, 32px) clamp(16px, 3vw, 24px);
   }
 
   .reward-item {
-    padding: 16px 24px;
+    padding: clamp(14px, 2.5vw, 18px) clamp(20px, 3vw, 24px);
   }
 
-  .reward-item-text {
-    font-size: 1.1rem;
+  .reward-item-green {
+    padding: clamp(10px, 2vw, 14px) clamp(16px, 2.5vw, 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .reward-card {
+    width: 98%;
+    padding: 24px 16px;
+  }
+
+  .gift-icon {
+    margin-bottom: 20px;
+  }
+
+  .reward-item {
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .reward-item-green {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .reward-card {
+    width: 100%;
+    padding: 20px 12px;
+    border-radius: 16px;
+  }
+
+  .gift-icon {
+    margin-bottom: 16px;
+  }
+
+  .congratulations-title {
+    margin-bottom: 8px;
+  }
+
+  .unlocked-text {
+    margin-bottom: 16px;
+  }
+
+  .reward-item {
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+
+  .reward-item-green {
+    padding: 10px 14px;
+    margin-bottom: 16px;
   }
 
   .claim-button {
-    padding: 16px 24px;
-    font-size: 1.1rem;
+    border-radius: 12px;
   }
 }
 

@@ -14,6 +14,7 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
   const currentRotationRef = useRef(0);
   const zoomLogoRef = useRef<HTMLImageElement | null>(null);
   const [zoomLogoLoaded, setZoomLogoLoaded] = useState(false);
+  const [canvasSize, setCanvasSize] = useState(500);
   useEffect(() => {
     const zoomLogo = new Image();
     zoomLogo.crossOrigin = 'anonymous';
@@ -29,6 +30,21 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
     zoomLogoRef.current = zoomLogo;
   }, []);
 
+  useEffect(() => {
+    const calculateCanvasSize = () => {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const maxSize = Math.min(viewportWidth, viewportHeight) * 0.7;
+      const minSize = 300;
+      const calculatedSize = Math.max(minSize, Math.min(maxSize, 500));
+      setCanvasSize(calculatedSize);
+    };
+
+    calculateCanvasSize();
+    window.addEventListener('resize', calculateCanvasSize);
+    return () => window.removeEventListener('resize', calculateCanvasSize);
+  }, []);
+
   const drawWheel = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -36,10 +52,10 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const radius = canvas.width / 2;
-    const centerRadius = 75;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = canvas.width / 2;
+      const centerRadius = canvasSize * 0.15; // Responsive center radius
     const arcSize = (2 * Math.PI) / segments.length;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -97,13 +113,15 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
       ctx.fillStyle = '#fff';
 
       const maxWidth = radius - centerRadius - 30;
-      let fontSize = 16;
+      // Responsive font size based on canvas size
+      const baseFontSize = canvasSize * 0.032; // Scale with canvas size
+      let fontSize = baseFontSize;
       if (segment.text.length > 50) {
-        fontSize = 12;
+        fontSize = baseFontSize * 0.75;
       } else if (segment.text.length > 40) {
-        fontSize = 14;
+        fontSize = baseFontSize * 0.875;
       } else if (segment.text.length > 30) {
-        fontSize = 15;
+        fontSize = baseFontSize * 0.9375;
       }
 
       ctx.font = `bold ${fontSize}px 'Poppins', sans-serif`;
@@ -214,8 +232,13 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
   };
 
   useEffect(() => {
-    drawWheel();
-  }, [segments, zoomLogoLoaded]);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = canvasSize;
+      canvas.height = canvasSize;
+      drawWheel();
+    }
+  }, [segments, zoomLogoLoaded, canvasSize]);
 
   const createSparkle = (x: number, y: number) => {
     const sparkle = document.createElement('div');
@@ -414,9 +437,10 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
       <canvas
         ref={canvasRef}
         id="wheelCanvas"
-        width={500}
-        height={500}
+        width={canvasSize}
+        height={canvasSize}
         className={isSpinning ? 'spinning' : ''}
+        style={{ width: '100%', height: '100%', maxWidth: '500px', maxHeight: '500px' }}
       />
       <button
         id="spinButton"

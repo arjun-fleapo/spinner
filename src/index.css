@@ -162,6 +162,8 @@ body {
   animation: fadeInScale 0.8s ease-out;
   position: relative;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body::before {
@@ -216,9 +218,27 @@ body::after {
   z-index: 1;
 }
 
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+}
+
 @media (max-width: 600px) {
   body {
     padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  body {
+    padding: 5px;
   }
 }
 

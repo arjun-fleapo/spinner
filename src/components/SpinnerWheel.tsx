@@ -122,7 +122,10 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
 
       const lineHeight = fontSize + 6;
       const startY = (-(lines.length - 1) * lineHeight) / 2;
-      const logoSize = fontSize * 2.2;
+      // Logo dimensions - make width larger than height for better visibility
+      // For segment 2 (Pro Annual), fontSize is 12px
+      const logoHeight = fontSize * 1.33;
+      const logoWidth = fontSize * 2.8; // Wider logo
 
       lines.forEach((line, lineIndex) => {
         if (line.includes('Zoom') && zoomLogoLoaded && index === 2 && zoomLogoRef.current) {
@@ -132,7 +135,7 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
 
           const beforeWidth = beforeZoom ? ctx.measureText(beforeZoom + ' ').width : 0;
           const afterWidth = afterZoom ? ctx.measureText(' ' + afterZoom).width : 0;
-          const totalWidth = beforeWidth + logoSize + afterWidth;
+          const totalWidth = beforeWidth + logoWidth + afterWidth;
 
           ctx.textAlign = 'left';
           let xPos = -totalWidth / 2;
@@ -143,14 +146,23 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
           }
 
           try {
-            ctx.drawImage(
-              zoomLogoRef.current,
-              xPos,
-              startY + lineIndex * lineHeight - logoSize / 2,
-              logoSize,
-              logoSize
-            );
-            xPos += logoSize;
+            // Align logo vertically centered with text line
+            // Since textBaseline is 'middle', the text Y coordinate is the vertical center
+            const textCenterY = startY + lineIndex * lineHeight;
+            // Center the logo vertically with the text - align middle of logo with middle of text
+            const logoY = textCenterY - logoHeight / 2;
+            
+            // Ensure logo is drawn with proper dimensions - wider than tall
+            if (zoomLogoRef.current && zoomLogoRef.current.complete) {
+              ctx.drawImage(
+                zoomLogoRef.current,
+                xPos,
+                logoY,
+                logoWidth,
+                logoHeight
+              );
+            }
+            xPos += logoWidth;
           } catch (e) {
             const zoomTextWidth = ctx.measureText('Zoom ').width;
             ctx.fillText('Zoom', xPos, startY + lineIndex * lineHeight);

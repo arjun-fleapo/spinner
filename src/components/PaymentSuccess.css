@@ -32,7 +32,7 @@
 .payment-title {
   text-align: center;
   color: #10b981;
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-size: clamp(0.5rem, 5vw, 2.5rem);
   font-weight: 700;
   margin-bottom: 12px;
   text-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);

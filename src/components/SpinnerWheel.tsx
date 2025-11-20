@@ -52,16 +52,20 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Get the display size (context is already scaled by device pixel ratio)
+    const displayWidth = canvasSize;
+    const displayHeight = canvasSize;
+
     // Enable image smoothing for graphics
     ctx.imageSmoothingEnabled = true;
 
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = canvas.width / 2;
-      const centerRadius = canvas.width * 0.15; // Responsive center radius
+      const centerX = displayWidth / 2;
+      const centerY = displayHeight / 2;
+      const radius = displayWidth / 2;
+      const centerRadius = displayWidth * 0.15; // Responsive center radius
     const arcSize = (2 * Math.PI) / segments.length;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, displayWidth, displayHeight);
 
     segments.forEach((segment, index) => {
       const startAngle = index * arcSize - Math.PI / 2;
@@ -113,7 +117,7 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
       ctx.fillStyle = '#fff';
 
       // Adjust maxWidth based on canvas size - use less padding on smaller screens
-      const canvasWidth = canvas.width;
+      const canvasWidth = displayWidth;
       const padding = canvasWidth <= 350 ? 20 : canvasWidth <= 400 ? 25 : 30;
       const maxWidth = radius - centerRadius - padding;
       // Responsive font size based on canvas size
@@ -254,8 +258,23 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.width = canvasSize;
-      canvas.height = canvasSize;
+      // Get the actual display size from CSS (100% of container)
+      const displayWidth = canvasSize;
+      const displayHeight = canvasSize;
+      
+      // Account for device pixel ratio for crisp rendering
+      const dpr = window.devicePixelRatio || 1;
+      
+      // Set internal resolution to match display size * device pixel ratio
+      canvas.width = displayWidth * dpr;
+      canvas.height = displayHeight * dpr;
+      
+      // Scale context to match device pixel ratio
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.scale(dpr, dpr);
+      }
+      
       drawWheel();
     }
   }, [segments, zoomLogoLoaded, canvasSize]);
@@ -473,10 +492,7 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
       <canvas
         ref={canvasRef}
         id="wheelCanvas"
-        width={canvasSize}
-        height={canvasSize}
         className={isSpinning ? 'spinning' : ''}
-        style={{ width: '100%', height: '100%', maxWidth: '500px', maxHeight: '500px' }}
       />
       <button
         id="spinButton"

@@ -55,7 +55,7 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const radius = canvas.width / 2;
-      const centerRadius = canvasSize * 0.15; // Responsive center radius
+      const centerRadius = canvas.width * 0.15; // Responsive center radius
     const arcSize = (2 * Math.PI) / segments.length;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -114,7 +114,7 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
 
       const maxWidth = radius - centerRadius - 30;
       // Responsive font size based on canvas size
-      const baseFontSize = canvasSize * 0.032; // Scale with canvas size
+      const baseFontSize = canvas.width * 0.032; // Scale with canvas size
       let fontSize = baseFontSize;
       if (segment.text.length > 50) {
         fontSize = baseFontSize * 0.75;

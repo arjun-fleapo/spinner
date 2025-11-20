@@ -17,6 +17,9 @@ export function RewardClaimedPage({ show }: RewardClaimedPageProps) {
           started with your exclusive rewards.
         </p>
       </div>
+      <p className="claimed-email-note">
+        In the meantime you can check your inbox/spam on email for next steps on Enterprise Setup Purchase.
+      </p>
     </div>
   );
 }

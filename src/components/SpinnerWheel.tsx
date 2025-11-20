@@ -449,6 +449,22 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
     }, 100);
   }, []);
 
+  // Prevent scrolling while spinning
+  useEffect(() => {
+    if (isSpinning) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+    };
+  }, [isSpinning]);
+
   return (
     <div className="wheel-container">
       <div className="pointer"></div>

@@ -82,6 +82,10 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
 
       ctx.save();
       ctx.translate(textX, textY);
+      // Counter-rotate text by current wheel rotation to keep it horizontal and readable when wheel stops
+      // This ensures text stays straight regardless of wheel rotation
+      const currentRotationRad = (currentRotationRef.current * Math.PI) / 180;
+      ctx.rotate(-currentRotationRad);
 
       ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
       ctx.shadowBlur = 5;
@@ -323,6 +327,9 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
 
       canvas.style.transition = 'none';
       canvas.style.transform = `rotate(${currentRotationRef.current}deg)`;
+
+      // Redraw wheel with updated rotation so text counter-rotation is applied
+      drawWheel();
 
       setTimeout(() => {
         canvas.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';

@@ -1,0 +1,233 @@
+.wheel-container {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  margin: 20px auto;
+  padding: 30px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 107, 53, 0.2) inset,
+    0 0 80px rgba(255, 107, 53, 0.2);
+  animation: fadeInScale 1s ease-out 0.3s both;
+  z-index: 1;
+  border: 1px solid rgba(255, 107, 53, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wheel-container::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.3),
+    rgba(247, 147, 30, 0.2),
+    rgba(255, 215, 0, 0.3)
+  );
+  border-radius: 24px;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+#wheelCanvas {
+  display: block;
+  margin: 0;
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+  border-radius: 50%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 0 12px rgba(255, 107, 53, 0.2),
+    0 0 50px rgba(255, 107, 53, 0.3);
+  animation: wheelGlow 3s ease-in-out infinite;
+  position: relative;
+  transform-origin: center center;
+}
+
+#wheelCanvas.spinning {
+  animation: spinGlow 0.5s ease-in-out infinite;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 8px rgba(255, 255, 255, 0.15),
+    0 0 0 12px rgba(255, 107, 53, 0.3);
+}
+
+.pointer {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 60px;
+  height: 60px;
+  z-index: 15;
+  animation: pointerBounce 2s ease-in-out infinite;
+}
+
+.pointer::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 32px solid #ffffff;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+}
+
+.pointer::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(
+    135deg,
+    #ff6b35 0%,
+    #f7931e 50%,
+    #ffd700 100%
+  );
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.5),
+    0 0 0 3px rgba(255, 255, 255, 0.2), 0 0 0 6px rgba(255, 107, 53, 0.3);
+  z-index: -1;
+}
+
+#spinButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  font-size: 1.4em;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  background: linear-gradient(
+    135deg,
+    #ff6b35 0%,
+    #f7931e 50%,
+    #ffd700 100%
+  );
+  color: white;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4),
+    0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 4px 16px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 107, 53, 0.3);
+  z-index: 15;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: buttonPulse 2s ease-in-out infinite;
+  text-transform: uppercase;
+}
+
+#spinButton::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1)
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#spinButton:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+#spinButton:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    #f7931e 0%,
+    #ffd700 50%,
+    #ff6b35 100%
+  );
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 0 12px 40px rgba(255, 107, 53, 0.5),
+    0 0 0 2px rgba(255, 255, 255, 0.2) inset,
+    0 6px 20px rgba(0, 0, 0, 0.3), 0 0 60px rgba(255, 107, 53, 0.4);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+#spinButton:active:not(:disabled) {
+  transform: translate(-50%, -50%) scale(0.96);
+  animation: none;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4),
+    0 0 0 2px rgba(255, 255, 255, 0.15) inset;
+}
+
+#spinButton:disabled {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  cursor: not-allowed;
+  transform: translate(-50%, -50%);
+  animation: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+  animation: sparkle 1s ease-out forwards;
+}
+
+@media (max-width: 600px) {
+  .wheel-container {
+    width: 90vw;
+    height: 90vw;
+    max-width: 450px;
+    max-height: 450px;
+    padding: 15px;
+  }
+
+  #wheelCanvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .pointer {
+    top: 15px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .pointer::before {
+    border-left-width: 15px;
+    border-right-width: 15px;
+    border-top-width: 25px;
+  }
+
+  .pointer::after {
+    width: 40px;
+    height: 40px;
+  }
+
+  #spinButton {
+    width: 90px;
+    height: 90px;
+    font-size: 1.1em;
+  }
+}
+

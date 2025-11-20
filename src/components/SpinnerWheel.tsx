@@ -112,16 +112,34 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#fff';
 
-      const maxWidth = radius - centerRadius - 30;
+      // Adjust maxWidth based on canvas size - use less padding on smaller screens
+      const canvasWidth = canvas.width;
+      const padding = canvasWidth <= 350 ? 20 : canvasWidth <= 400 ? 25 : 30;
+      const maxWidth = radius - centerRadius - padding;
       // Responsive font size based on canvas size
-      const baseFontSize = canvas.width * 0.032; // Scale with canvas size
+      // Use a larger multiplier for smaller screens to ensure readability
+      let baseFontSize;
+      if (canvasWidth <= 350) {
+        // For mobile screens (300-350px), use larger multiplier
+        baseFontSize = canvasWidth * 0.038; // ~11.4-13.3px
+      } else if (canvasWidth <= 400) {
+        // For medium screens (350-400px)
+        baseFontSize = canvasWidth * 0.035; // ~12.25-14px
+      } else {
+        // For larger screens (400px+)
+        baseFontSize = canvasWidth * 0.03; // ~12-15px
+      }
+      // Ensure minimum font size for readability
+      const minFontSize = 11;
+      baseFontSize = Math.max(baseFontSize, minFontSize);
+      
       let fontSize = baseFontSize;
       if (segment.text.length > 50) {
-        fontSize = baseFontSize * 0.75;
+        fontSize = Math.max(baseFontSize * 0.75, minFontSize * 0.9);
       } else if (segment.text.length > 40) {
-        fontSize = baseFontSize * 0.875;
+        fontSize = Math.max(baseFontSize * 0.875, minFontSize * 0.95);
       } else if (segment.text.length > 30) {
-        fontSize = baseFontSize * 0.9375;
+        fontSize = Math.max(baseFontSize * 0.9375, minFontSize * 0.98);
       }
 
       ctx.font = `bold ${fontSize}px 'Poppins', sans-serif`;

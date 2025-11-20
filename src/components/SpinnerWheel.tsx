@@ -16,18 +16,31 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
   const [zoomLogoLoaded, setZoomLogoLoaded] = useState(false);
   const [canvasSize, setCanvasSize] = useState(500);
   useEffect(() => {
-    const zoomLogo = new Image();
-    zoomLogo.crossOrigin = 'anonymous';
-    zoomLogo.src = 'https://tagmango.com/staticassets/-zoom_communications_logo-2-1-aa5ef39a561166fabfbb7abd15eb92e5.svg';
-    zoomLogo.onload = () => {
-      setZoomLogoLoaded(true);
-      drawWheel();
+    const loadZoomLogo = (retryCount = 0) => {
+      const zoomLogo = new Image();
+      zoomLogo.crossOrigin = 'anonymous';
+      zoomLogo.src = 'https://tagmango.com/staticassets/-zoom_communications_logo-2-1-aa5ef39a561166fabfbb7abd15eb92e5.svg';
+      
+      zoomLogo.onload = () => {
+        setZoomLogoLoaded(true);
+        zoomLogoRef.current = zoomLogo;
+        // The wheel will redraw automatically via the useEffect that watches zoomLogoLoaded
+      };
+      
+      zoomLogo.onerror = () => {
+        if (retryCount < 2) {
+          // Retry loading the logo (up to 2 retries)
+          setTimeout(() => {
+            loadZoomLogo(retryCount + 1);
+          }, 1000 * (retryCount + 1));
+        } else {
+          console.warn('Failed to load Zoom logo after retries');
+          setZoomLogoLoaded(false);
+        }
+      };
     };
-    zoomLogo.onerror = () => {
-      console.warn('Failed to load Zoom logo');
-      setZoomLogoLoaded(false);
-    };
-    zoomLogoRef.current = zoomLogo;
+    
+    loadZoomLogo();
   }, []);
 
   useEffect(() => {
@@ -197,7 +210,11 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
             const logoY = textCenterY - logoHeight / 2;
             
             // Ensure logo is drawn with proper dimensions - wider than tall
-            if (zoomLogoRef.current && zoomLogoRef.current.complete) {
+            // Check if image is loaded and has dimensions
+            if (zoomLogoRef.current && 
+                zoomLogoRef.current.complete && 
+                zoomLogoRef.current.naturalWidth > 0 && 
+                zoomLogoRef.current.naturalHeight > 0) {
               ctx.drawImage(
                 zoomLogoRef.current,
                 xPos,
@@ -205,9 +222,15 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
                 logoWidth,
                 logoHeight
               );
+              xPos += logoWidth;
+            } else {
+              // Fallback to text if logo not ready
+              const zoomTextWidth = ctx.measureText('Zoom ').width;
+              ctx.fillText('Zoom', xPos, startY + lineIndex * lineHeight);
+              xPos += zoomTextWidth;
             }
-            xPos += logoWidth;
           } catch (e) {
+            // Fallback to text on error
             const zoomTextWidth = ctx.measureText('Zoom ').width;
             ctx.fillText('Zoom', xPos, startY + lineIndex * lineHeight);
             xPos += zoomTextWidth;

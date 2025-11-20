@@ -52,6 +52,9 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Enable image smoothing for graphics
+    ctx.imageSmoothingEnabled = true;
+
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const radius = canvas.width / 2;
@@ -93,8 +96,8 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
 
       const segmentMiddleAngle = startAngle + arcSize / 2;
       const textRadius = (centerRadius + radius) / 2;
-      const textX = centerX + Math.cos(segmentMiddleAngle) * textRadius;
-      const textY = centerY + Math.sin(segmentMiddleAngle) * textRadius;
+      const textX = Math.round(centerX + Math.cos(segmentMiddleAngle) * textRadius);
+      const textY = Math.round(centerY + Math.sin(segmentMiddleAngle) * textRadius);
 
       ctx.save();
       ctx.translate(textX, textY);
@@ -103,11 +106,8 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
       const currentRotationRad = (currentRotationRef.current * Math.PI) / 180;
       ctx.rotate(-currentRotationRad);
 
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-      ctx.shadowBlur = 5;
-      ctx.shadowOffsetX = 2;
-      ctx.shadowOffsetY = 2;
-
+      // Disable image smoothing for crisp text rendering
+      ctx.imageSmoothingEnabled = false;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#fff';
@@ -126,8 +126,8 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
         // For medium screens (350-400px)
         baseFontSize = canvasWidth * 0.035; // ~12.25-14px
       } else {
-        // For larger screens (400px+)
-        baseFontSize = canvasWidth * 0.03; // ~12-15px
+        // For larger screens (400px+) - web screen size
+        baseFontSize = canvasWidth * 0.04; // ~16-20px for better readability on desktop
       }
       // Ensure minimum font size for readability
       const minFontSize = 11;
@@ -219,6 +219,8 @@ export function SpinnerWheel({ segments, onSpinComplete }: SpinnerWheelProps) {
         }
       });
 
+      // Re-enable image smoothing for graphics
+      ctx.imageSmoothingEnabled = true;
       ctx.restore();
     });
 

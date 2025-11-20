@@ -1312,29 +1312,41 @@
           ctx.arc(centerX, centerY, radius - 2, startAngle, endAngle);
           ctx.stroke();
 
+          // Calculate the position for text (middle of segment along radius)
+          const segmentMiddleAngle = startAngle + arcSize / 2;
+          const textRadius = (centerRadius + radius) / 2; // Position text between center and edge
+          const textX = centerX + Math.cos(segmentMiddleAngle) * textRadius;
+          const textY = centerY + Math.sin(segmentMiddleAngle) * textRadius;
+
           ctx.save();
-          ctx.translate(centerX, centerY);
-          ctx.rotate(startAngle + arcSize / 2);
+          // Translate to text position
+          ctx.translate(textX, textY);
+          // Keep text vertical (straight up/down) - no rotation needed
+          // The text will be drawn normally (horizontal by default)
 
           ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
           ctx.shadowBlur = 5;
           ctx.shadowOffsetX = 2;
           ctx.shadowOffsetY = 2;
 
-          ctx.textAlign = "left";
+          ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillStyle = "#fff";
 
+          // For vertical text layout, use the radial space available
           const maxWidth = radius - centerRadius - 30;
-          let fontSize = 18;
-          if (segment.text.length > 40) {
+          let fontSize = 16;
+          if (segment.text.length > 50) {
+            fontSize = 12;
+          } else if (segment.text.length > 40) {
             fontSize = 14;
           } else if (segment.text.length > 30) {
-            fontSize = 16;
+            fontSize = 15;
           }
 
           ctx.font = `bold ${fontSize}px 'Poppins', sans-serif`;
 
+          // Split text into words and create lines that fit
           const words = segment.text.split(" ");
           const lines = [];
           let currentLine = words[0];
@@ -1351,12 +1363,13 @@
           }
           lines.push(currentLine);
 
-          const lineHeight = fontSize + 4;
+          // Draw text vertically (each line below the previous)
+          const lineHeight = fontSize + 6;
           const startY = (-(lines.length - 1) * lineHeight) / 2;
           lines.forEach((line, lineIndex) => {
             ctx.fillText(
               line,
-              centerRadius + 20,
+              0,
               startY + lineIndex * lineHeight
             );
           });

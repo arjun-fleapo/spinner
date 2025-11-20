@@ -58,6 +58,23 @@ export function RewardPage({ show, rewardText, onClaimSuccess, onError }: Reward
             }}
           />
         </div>
+
+        <div className="reward-item-green">
+          <span className="reward-item-green-text">
+            You Save Expense of Rs. 90,000 in{' '}
+            <img
+              src="https://tagmango.com/staticassets/-zoom_communications_logo-2-1-aa5ef39a561166fabfbb7abd15eb92e5.svg"
+              alt="Zoom"
+              style={{
+                height: '1.2em',
+                verticalAlign: 'middle',
+                display: 'inline-block',
+                margin: '0 4px',
+              }}
+            />{' '}
+           Webinar
+          </span>
+        </div>
         <button
           className={`claim-button ${isLoading ? 'loading' : ''}`}
           onClick={handleClaim}

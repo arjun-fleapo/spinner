@@ -1253,7 +1253,7 @@
           gradient: ["#F7931E", "#FFD700"],
         },
         {
-          text: "Pro Annual at (Rs. 50,000 + GST) + Zoom (use zoom logo) Webinar 500 Free for 1 Year",
+          text: "Pro Annual at (Rs. 50,000 + GST) + Zoom Webinar 500 Free for 1 Year",
           color: "#FFD700",
           gradient: ["#FFD700", "#FFA500"],
         },
@@ -1271,6 +1271,20 @@
 
       let currentRotation = 0;
       let isSpinning = false;
+      
+      // Load Zoom logo image
+      const zoomLogo = new Image();
+      zoomLogo.crossOrigin = "anonymous";
+      zoomLogo.src = "https://logo.svgcdn.com/logos/zoom.png";
+      let zoomLogoLoaded = false;
+      zoomLogo.onload = function() {
+        zoomLogoLoaded = true;
+        drawWheel();
+      };
+      zoomLogo.onerror = function() {
+        console.warn("Failed to load Zoom logo");
+        zoomLogoLoaded = false;
+      };
 
       function drawWheel() {
         const centerX = wheelCanvas.width / 2;
@@ -1366,12 +1380,57 @@
           // Draw text vertically (each line below the previous)
           const lineHeight = fontSize + 6;
           const startY = (-(lines.length - 1) * lineHeight) / 2;
+          const logoSize = fontSize * 3.2; // Logo size relative to font
+          
           lines.forEach((line, lineIndex) => {
-            ctx.fillText(
-              line,
-              0,
-              startY + lineIndex * lineHeight
-            );
+            // Check if this line contains "Zoom" and we have the logo loaded
+            if (line.includes("Zoom") && zoomLogoLoaded && index === 2) {
+              // Split the line at "Zoom"
+              const parts = line.split("Zoom");
+              const beforeZoom = parts[0].trim();
+              const afterZoom = parts[1] ? parts[1].trim() : "";
+              
+              // Calculate total width for centering
+              const beforeWidth = beforeZoom ? ctx.measureText(beforeZoom + " ").width : 0;
+              const afterWidth = afterZoom ? ctx.measureText(" " + afterZoom).width : 0;
+              const totalWidth = beforeWidth + logoSize + afterWidth;
+              
+              // Temporarily change alignment to left for precise positioning
+              ctx.textAlign = "left";
+              let xPos = -totalWidth / 2;
+              
+              // Draw text before "Zoom"
+              if (beforeZoom) {
+                ctx.fillText(beforeZoom + " ", xPos, startY + lineIndex * lineHeight);
+                xPos += beforeWidth;
+              }
+              
+              // Draw Zoom logo
+              try {
+                ctx.drawImage(zoomLogo, xPos, startY + lineIndex * lineHeight - logoSize/2, logoSize, logoSize);
+                xPos += logoSize;
+              } catch(e) {
+                // Fallback to text if image fails
+                const zoomTextWidth = ctx.measureText("Zoom ").width;
+                ctx.fillText("Zoom", xPos, startY + lineIndex * lineHeight);
+                xPos += zoomTextWidth;
+              }
+              
+              // Draw text after "Zoom"
+              if (afterZoom) {
+                ctx.fillText(" " + afterZoom, xPos, startY + lineIndex * lineHeight);
+              }
+              
+              // Restore center alignment
+              ctx.textAlign = "center";
+            } else {
+              // Draw line normally
+              ctx.fillText(
+                line,
+                0,
+                startY + lineIndex * lineHeight
+              );
+            }
           });
 
           ctx.restore();
@@ -1537,7 +1596,10 @@
         }
 
         let segmentAtTop = 2;
-        rewardItemText.textContent = segments[segmentAtTop].text;
+        let rewardText = segments[segmentAtTop].text;
+        // Replace "Zoom" with logo image
+        rewardText = rewardText.replace(/Zoom/g, '<img src="https://logo.svgcdn.com/logos/zoom.png" alt="Zoom" style="height: 3em; vertical-align: middle; display: inline-block; margin: 0 4px;">');
+        rewardItemText.innerHTML = rewardText;
         setTimeout(() => {
           rewardPage.classList.add("show");
         }, 1500);

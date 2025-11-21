@@ -23,7 +23,7 @@ const segments: Segment[] = [
     gradient: ['#F7931E', '#FFD700'],
   },
   {
-    text: 'Pro Annual at (Rs. 50,000 + GST) + Zoom Webinar 500 Free for 1 Year',
+    text: 'Pro Annual at (Rs. 50,000 + GST) + Free Zoom Webinar 500 for 1 Year',
     color: '#FFD700',
     gradient: ['#FFD700', '#FFA500'],
   },
